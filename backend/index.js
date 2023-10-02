@@ -3,7 +3,7 @@ const { connect } = require('mongoose');
 const cors = require('cors');
 const flashcardRouter = require('./routes/flashcards');
 const { config } = require('dotenv');
-const aiRouter = require('./routes/ai');
+const { aiRouter } = require('./routes/ai');
 
 config();
 const app = express();
