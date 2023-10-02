@@ -4,13 +4,13 @@ const cors = require('cors');
 const flashcardRouter = require('./routes/flashcards');
 const { config } = require('dotenv');
 const { OpenAI } = require('openai');
-const { router } = require('./routes/ai');
+const aiRouter = require('./routes/ai');
 
 config();
 const app = express();
 const openAI = new OpenAI();
 
-db = connect(process.env.DBURI)
+connect(process.env.DBURI)
 	.then(() => {
 		console.log('db connected');
 		app.listen(4000, () =>
@@ -25,4 +25,4 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/flashcard', flashcardRouter);
-app.use('/ai', router);
+app.use('/ai', aiRouter);

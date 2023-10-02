@@ -1,11 +1,7 @@
-const { OpenAI } = require('openai');
-const aiRouter = require('express').Router();
-require('dotenv').config();
+const { Router } = require('express');
 const aiFlashcardRouter = require('./ai/aiFlashcards');
 
-const openai = new OpenAI({
-	apiKey: process.env.OPENAI_API_KEY,
-});
+const aiRouter = Router();
 aiRouter.use('/flashcard', aiFlashcardRouter);
 
-module.exports = { aiRouter, openai };
+module.exports = aiRouter;
