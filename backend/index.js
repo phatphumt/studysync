@@ -3,12 +3,10 @@ const { connect } = require('mongoose');
 const cors = require('cors');
 const flashcardRouter = require('./routes/flashcards');
 const { config } = require('dotenv');
-const { OpenAI } = require('openai');
 const aiRouter = require('./routes/ai');
 
 config();
 const app = express();
-const openAI = new OpenAI();
 
 connect(process.env.DBURI)
 	.then(() => {
