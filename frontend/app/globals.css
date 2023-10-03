@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-	padding: 1rem;
+.material-icons-outlined.big {
+	font-size: 8rem;
+	user-select: none;
 }
