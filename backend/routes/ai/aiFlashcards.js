@@ -4,6 +4,7 @@ const { flashcardPrompt, aiPrompt } = require('./prompts');
 
 config();
 const aiFlashcardRouter = express.Router();
+const sendError = (res, e) => res.status(500).send({ error: `${e}` });
 
 aiFlashcardRouter.get('/test', async (_, res) => {
 	console.log(process.env.OPENAI_API_KEY);
@@ -11,4 +12,19 @@ aiFlashcardRouter.get('/test', async (_, res) => {
 	res.send(a);
 });
 
+aiFlashcardRouter.get('/', async (req, res) => {
+	const { choices, topic } = req.body;
+
+	if (!choices) {
+		sendError(res, 'choices or topic must not be empty');
+		return;
+	}
+	if (!topic) {
+		sendError(res, 'choices or topic must not be empty');
+		return;
+	}
+
+	const a = await aiPrompt(flashcardPrompt(choices, topic));
+	res.send(a);
+});
 module.exports = aiFlashcardRouter;
