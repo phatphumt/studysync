@@ -18,20 +18,23 @@ type Props = {
 const AuthContext = createContext<
 	| undefined
 	| {
-			signIn: (email: string, password: string) => Promise<void>;
+			signIn: (email: string, password: string) => Promise<null | string>;
 			logout: () => void;
 			user: User | null;
+			loading: boolean;
 	  }
 >(undefined);
 
 const SessionProvider = ({ children }: Props) => {
 	const [user, setUser] = useState<User | null>(null);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const signIn = async (email: string, password: string) => {
 		try {
 			await signInWithEmailAndPassword(getAuth(app), email, password);
+			return null;
 		} catch (e) {
-			throw new Error(`sign in failed: ${e}`);
+			return `${e}`;
 		}
 	};
 
@@ -40,15 +43,17 @@ const SessionProvider = ({ children }: Props) => {
 	};
 
 	useEffect(() => {
+		setLoading(true);
 		const unsub = onAuthStateChanged(getAuth(app), (currentUser) => {
 			setUser(currentUser);
+			setLoading(false);
 		});
 
 		return unsub;
 	}, [user]);
 
 	return (
-		<AuthContext.Provider value={{ signIn, logout, user }}>
+		<AuthContext.Provider value={{ signIn, logout, user, loading }}>
 			{children}
 		</AuthContext.Provider>
 	);

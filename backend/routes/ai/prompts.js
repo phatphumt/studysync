@@ -26,11 +26,11 @@ const quizPrompt = (
 			[
 				{
 					"question": "The question (item #1)",
-					"choices": ['choice 1', 'choice 2', ...rest of the choice]
+					"choices": [{choice: 'choice 1', correct: true}, {choice: 'choice 2', correct: false}, ...rest of the choice]
 				},
 				{
 					"question": "The question (item #2)",
-					"choices": ['choice 1', 'choice 2', ...rest of the choice]
+					"choices": [{choice: 'choice 1', correct: true}, {choice: 'choice 2', correct: false}, ...rest of the choice]
 				}
 				...rest of the questions
 			]

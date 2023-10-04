@@ -21,7 +21,16 @@ const Navbar = () => {
 						{user?.user === null ? (
 							<Link href="/login">Login</Link>
 						) : (
-							<Link href="/dashboard">{user?.user.email}</Link>
+							<details>
+								<summary>
+									<Link href="/dashboard">{user?.user.email}</Link>
+								</summary>
+								<ul className="p-2 bg-base-100">
+									<li onClick={() => user?.logout()}>
+										<Link href={''}>Sign Out</Link>
+									</li>
+								</ul>
+							</details>
 						)}
 					</li>
 				</ul>

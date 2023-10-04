@@ -24,7 +24,7 @@ const Home = () => {
 		{
 			title: 'ทบทวน',
 			icon: 'rate_review',
-			desc: ['ทบทวนโดยการใช้', 'Flashcard หรือ Quiz', 'ที่สร้างขึ้นโดย ai'],
+			desc: ['ทบทวนโดยการใช้', 'Flashcard หรือ Quiz', 'ที่สร้างขึ้นโดย AI'],
 		},
 	];
 

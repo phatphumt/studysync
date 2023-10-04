@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect } from 'react';
-import Button from '../components/util/Button';
 import { useAuth } from '../SessionProvider';
 import { redirect } from 'next/navigation';
 
@@ -14,9 +13,6 @@ export default function Dashboard() {
 	return (
 		<>
 			<div className="m-10">hello, {user?.user?.email}</div>
-			<div onClick={() => user?.logout()}>
-				<Button>Sign out</Button>
-			</div>
 		</>
 	);
 }

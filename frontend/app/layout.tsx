@@ -5,8 +5,8 @@ import 'material-icons/iconfont/material-icons.css';
 import type { Metadata } from 'next';
 import { Anuphan } from 'next/font/google';
 import React from 'react';
-import Navbar from './components/Navbar';
 import SessionProvider from './SessionProvider';
+import Preloader from './components/Preloader';
 
 const kanit = Anuphan({
 	subsets: ['latin', 'thai'],
@@ -25,8 +25,7 @@ export default function RootLayout({
 		<html lang="en">
 			<SessionProvider>
 				<body className={kanit.className}>
-					<Navbar />
-					{children}
+					<Preloader>{children}</Preloader>
 				</body>
 			</SessionProvider>
 		</html>

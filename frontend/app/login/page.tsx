@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../components/util/Button';
 import Link from 'next/link';
 import { useAuth } from '../SessionProvider';
@@ -18,6 +18,12 @@ const LoginPage = () => {
 	const [error, setError] = useState<null | string>(null);
 	const user = useAuth();
 
+	useEffect(() => {
+		if (user?.user !== null) {
+			redirect('/dashboard');
+		}
+	});
+
 	const handleSignin = async (
 		e: React.FormEvent,
 		{ email, password }: UserCreds
@@ -27,12 +33,15 @@ const LoginPage = () => {
 		const authEmail = email[0];
 		const authPassword = password[0];
 		console.log(authEmail, authPassword);
-		try {
-			await user?.signIn(authEmail, authPassword).catch((e) => setError(e));
-			redirect('/');
-		} catch (e: any) {
-			console.log(e);
+		const a = await user
+			?.signIn(authEmail, authPassword)
+			.catch((e) => setError(e));
+		if (a != null) {
+			setError(a);
+			return;
 		}
+		setError(null);
+		console.log('success');
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
