@@ -1,7 +1,10 @@
+'use client';
 import Link from 'next/link';
 import React from 'react';
+import { useAuth } from '../SessionProvider';
 
 const Navbar = () => {
+	const user = useAuth();
 	return (
 		<div className="navbar bg-base-200">
 			<div className="flex-1">
@@ -15,7 +18,11 @@ const Navbar = () => {
 						<Link href="/dashboard">Dashboard</Link>
 					</li>
 					<li>
-						<Link href="/login">Login</Link>
+						{user?.user === null ? (
+							<Link href="/login">Login</Link>
+						) : (
+							<Link href="/dashboard">{user?.user.email}</Link>
+						)}
 					</li>
 				</ul>
 			</div>

@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import Button from '../components/util/Button';
 import Link from 'next/link';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../config/firebase';
+import { useAuth } from '../SessionProvider';
+import { redirect } from 'next/navigation';
 
 type UserCreds = {
 	email: string;
@@ -15,17 +15,24 @@ const LoginPage = () => {
 		email: '',
 		password: '',
 	});
+	const [error, setError] = useState<null | string>(null);
+	const user = useAuth();
 
-	const handleSignin = (e: React.FormEvent, { email, password }: UserCreds) => {
+	const handleSignin = async (
+		e: React.FormEvent,
+		{ email, password }: UserCreds
+	) => {
 		e.preventDefault();
-		console.log(email, password);
-		signInWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				console.log(userCredential.user.email);
-			})
-			.catch((error: any) => {
-				console.error(error);
-			});
+		console.log(credential.email[0], credential.password[0]);
+		const authEmail = email[0];
+		const authPassword = password[0];
+		console.log(authEmail, authPassword);
+		try {
+			await user?.signIn(authEmail, authPassword).catch((e) => setError(e));
+			redirect('/');
+		} catch (e: any) {
+			console.log(e);
+		}
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +64,7 @@ const LoginPage = () => {
 				/>
 				<Button className="btn-outline w-1/4">Login</Button>
 			</form>
+			{error && <p className="font-bold text-red-500">{error}</p>}
 			<p>
 				Don&apos;t have an account?{' '}
 				<Link href="/signup" className="underline font-medium">
