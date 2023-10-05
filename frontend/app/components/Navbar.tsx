@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { useAuth } from '../SessionProvider';
+import { redirect } from 'next/navigation';
 
 const Navbar = () => {
 	const user = useAuth();
@@ -26,7 +27,12 @@ const Navbar = () => {
 									<Link href="/dashboard">{user?.user.email}</Link>
 								</summary>
 								<ul className="p-2 bg-base-100">
-									<li onClick={() => user?.logout()}>
+									<li
+										onClick={() => {
+											user?.logout();
+											redirect('/login');
+										}}
+									>
 										<Link href={''}>Sign Out</Link>
 									</li>
 								</ul>
