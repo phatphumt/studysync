@@ -18,7 +18,7 @@ const FlashcardHome = () => {
 				<div className="w-full text-center flex justify-end items-center">
 					<div
 						className="bg-main text-center flex flex-col w-8/12 h-1/2 items-center justify-center gap-4 rounded-lg hover:translate-y-[-.7rem] transition-all cursor-pointer"
-						onClick={() => router.push('/')}
+						onClick={() => router.push('/flashcard/new')}
 					>
 						<span className="font-semibold text-3xl">New flashcard</span>{' '}
 						<span className="material-icons-outlined big">add_circle</span>
@@ -31,7 +31,7 @@ const FlashcardHome = () => {
 				<div className="w-full flex justify-start items-center">
 					<div
 						className="bg-main text-center flex flex-col w-8/12 h-1/2 items-center justify-center gap-4 rounded-lg hover:translate-y-[-.7rem] transition-all cursor-pointer"
-						onClick={() => router.push('/')}
+						onClick={() => router.push('/flashcard/list')}
 					>
 						<span className="font-semibold text-3xl">Your flashcard</span>{' '}
 						<span className="material-icons-outlined big">folder_open</span>
