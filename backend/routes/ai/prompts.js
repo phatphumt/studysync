@@ -38,7 +38,7 @@ const quizPrompt = (
 
 /////////
 config();
-const ai = new OpenAI();
+const ai = new OpenAI({ apiKey: process.env.OPENAI_APIKEY });
 const aiPrompt = async (prompt) => {
 	try {
 		const data = await ai.chat.completions.create({

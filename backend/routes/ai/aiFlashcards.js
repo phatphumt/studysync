@@ -12,7 +12,7 @@ aiFlashcardRouter.get('/test', async (_, res) => {
 	res.send(a);
 });
 
-aiFlashcardRouter.get('/', async (req, res) => {
+aiFlashcardRouter.post('/', async (req, res) => {
 	const { choices, topic } = req.body;
 
 	if (!choices) {

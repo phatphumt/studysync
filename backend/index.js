@@ -8,7 +8,7 @@ const { aiRouter } = require('./routes/ai');
 config();
 const app = express();
 
-connect(process.env.DBURI)
+/* connect(process.env.DBURI)
 	.then(() => {
 		console.log('db connected');
 		app.listen(4000, () =>
@@ -17,8 +17,11 @@ connect(process.env.DBURI)
 	})
 	.catch((e) => {
 		console.log(e);
-	});
+	}); */
 
+		app.listen(4000, () =>
+      console.log("server running at: http://localhost:4000")
+    );
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
