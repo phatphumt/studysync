@@ -13,8 +13,8 @@ const FlashcardAIGen = () => {
   const [body, setBody] = useState<Body>({ choices: '', topic: '' })
   const [error, setErorr] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
-
-  const click = async () => {
+  
+  async function click() {
     setData(null);
     setStatus('getting data')
     const a = await fetch('http://localhost:4000/ai/flashcard/test')

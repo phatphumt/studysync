@@ -1,5 +1,5 @@
 */node_modules
-backend/.env
+*/.env
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
@@ -36,7 +36,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# temporary
-
-./frontend/app/config
+frontend/.env
+frontend/.env
