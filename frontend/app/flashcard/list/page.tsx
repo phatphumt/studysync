@@ -12,26 +12,27 @@ const ListFlashcard = () => {
   useEffect(() => {
     async function a() {
       try {
-				if (!auth?.user?.uid) {
-					return;
-				}
-				const uid: string = auth?.user?.uid;
-        const q = query(collection(db, "/flaschards"), where("owner", "==", uid));
-        const data = await getDocs(q);
+        if (!auth?.user?.uid) {
+          throw new Error("user id cannot be null or undefiend");
+        }
+        const uid: string = auth?.user?.uid;
+        const data = await getDocs(
+          query(collection(db, "/flashcards"), where("owner", "==", uid))
+        );
         const acutualData = data.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
         }));
-        console.log(acutualData);
         setDt(acutualData);
-				console.log('no error')
+        console.log("no error");
       } catch (e) {
         console.error(e);
+        alert(`error: ${e}`);
       }
     }
     a();
   }, [auth?.user?.uid]);
-	
+
   return (
     <div className="p-10">
       {dt &&
