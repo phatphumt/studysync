@@ -1,6 +1,11 @@
 "use client";
+import { useAuth } from "@/app/SessionProvider";
+import { db } from "@/app/config/firebase";
 import useCheckCredentials from "@/app/useCheckCredentials";
+import { doc, setDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import * as uuid from "uid";
 
 type Data = {
   question: string;
@@ -11,16 +16,19 @@ type Body = { choices: string; topic: string };
 
 const FlashcardAIGen = () => {
   useCheckCredentials();
-  const [data, setData] = useState<null | Data[]>(null);
+  const [data, setData] = useState<Data[]>([]);
   const [body, setBody] = useState<Body>({ choices: "", topic: "" });
   const [error, setErorr] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
+  const user = useAuth();
+  const router = useRouter();
 
   async function click() {
-    setData(null);
+    setData([]);
     setStatus("getting data");
     const a = await fetch("http://localhost:4000/ai/flashcard/test");
     const datata = await a.json();
+    setBody((prev) => ({ ...prev, topic: "testing" }));
     console.log(datata);
     setData(datata);
     setStatus(null);
@@ -28,7 +36,7 @@ const FlashcardAIGen = () => {
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setData(null);
+    setData([]);
     setStatus("getting data");
     const d = await fetch("http://localhost:4000/ai/flashcard/", {
       headers: {
@@ -54,6 +62,22 @@ const FlashcardAIGen = () => {
     });
     console.log(body);
   };
+
+  async function addToDB() {
+    console.log("adding");
+    if (!user?.user?.uid) return;
+    const uid: string = user?.user?.uid;
+    const docData = {
+      flashcards: [...data],
+      owner: uid,
+      name: `${body.topic} flashcard`,
+    };
+    console.log(docData);
+    await setDoc(doc(db, "flashcards", uuid.uid(25)), docData);
+    console.log("done");
+    setData([]);
+    router.push("/flashcard/list");
+  }
 
   return (
     <div className="p-5">
@@ -98,6 +122,13 @@ const FlashcardAIGen = () => {
       )}
       {status && <p>{status}</p>}
       {error && <p className="font-bold text-red-700">{error}</p>}
+      <br />
+      <button className="btn btn-sm" onClick={() => console.log(data)}>
+        current data
+      </button>
+      <button className="btn btn-sm mx-3" onClick={addToDB}>
+        add to db
+      </button>
     </div>
   );
 };

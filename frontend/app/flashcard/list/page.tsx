@@ -23,8 +23,11 @@ const ListFlashcard = () => {
           ...doc.data(),
           id: doc.id,
         }));
+        if (acutualData.length < 1) {
+          setDt(undefined);
+          return;
+        }
         setDt(acutualData);
-        console.log("no error");
       } catch (e) {
         console.error(e);
         alert(`error: ${e}`);
@@ -35,7 +38,7 @@ const ListFlashcard = () => {
 
   return (
     <div className="p-10">
-      {dt &&
+      {dt ? (
         dt.map((i: any) => (
           <div key={i.id}>
             <span className="font-bold text-xl">Flashcard ({i.name})</span>
@@ -46,7 +49,10 @@ const ListFlashcard = () => {
               </div>
             ))}
           </div>
-        ))}
+        ))
+      ) : (
+        <p>You have no flashcards</p>
+      )}
     </div>
   );
 };
