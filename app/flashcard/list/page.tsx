@@ -3,7 +3,7 @@
 import { useAuth } from "@/app/SessionProvider";
 import { db } from "@/app/config/firebase";
 import useCheckCredentials from "@/app/useCheckCredentials";
-import { collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 
 const ListFlashcard = () => {
@@ -38,10 +38,10 @@ const ListFlashcard = () => {
     a();
   }, [auth?.user?.uid]);
 
-/*   async function deleteData(id) {
-    await deleteDoc(doc(db, ))
-  }
- */
+  /*   async function deleteData(id) {
+      await deleteDoc(doc(db, ))
+    }
+   */
   return (
     <div className="p-10">
       {dt ? (

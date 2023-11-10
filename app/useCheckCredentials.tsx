@@ -8,7 +8,7 @@ const useCheckCredentials = (url: string) => {
     if (user?.user === null) {
       redirect(url);
     }
-  }, [user?.user]);
+  }, [user?.user, url]);
 };
 
 export default useCheckCredentials;
