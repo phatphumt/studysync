@@ -27,3 +27,4 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/flashcard', flashcardRouter);
 app.use('/ai', aiRouter);
+app.get('/ping', (_, res) => res.send('pong!'))

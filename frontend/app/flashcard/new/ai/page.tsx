@@ -15,7 +15,7 @@ type Data = {
 type Body = { choices: string; topic: string };
 
 const FlashcardAIGen = () => {
-  useCheckCredentials();
+  useCheckCredentials("/flashcard/new/ai");
   const [data, setData] = useState<Data[]>([]);
   const [body, setBody] = useState<Body>({ choices: "", topic: "" });
   const [error, setErorr] = useState<string | null>(null);
@@ -26,34 +26,51 @@ const FlashcardAIGen = () => {
   async function click() {
     setData([]);
     setStatus("getting data");
-    const a = await fetch("http://localhost:4000/ai/flashcard/test");
-    const datata = await a.json();
-    setBody((prev) => ({ ...prev, topic: "testing" }));
-    console.log(datata);
-    setData(datata);
-    setStatus(null);
+    try {
+      const d = await fetch("http://localhost:4000/ai/flashcard/", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+      if (!d.ok) {
+        const error = await d.json();
+        throw new Error(`error: ${error.error}`);
+      }
+      const datata = await d.json();
+      setData(datata);
+      setStatus(null);
+      setBody((prev) => ({ ...prev, topic: "testing" }));
+    } catch (e) {
+      setErorr(`${e}; server might not be online`);
+      setStatus('error')
+    }
   }
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setData([]);
     setStatus("getting data");
-    const d = await fetch("http://localhost:4000/ai/flashcard/", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-    if (!d.ok) {
-      const error = await d.json();
-      setErorr(`error: ${error.error}`);
-      setStatus("error");
-      return;
+    try {
+      const d = await fetch("http://localhost:4000/ai/flashcard/", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+      if (!d.ok) {
+        const error = await d.json();
+        throw new Error(`error: ${error.error}`);
+      }
+      const datata = await d.json();
+      setData(datata);
+      setStatus(null);
+    } catch (e) {
+      setErorr(`${e}; server might not be online`);
+      setStatus('error')
     }
-    const datata = await d.json();
-    setData(datata);
-    setStatus(null);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

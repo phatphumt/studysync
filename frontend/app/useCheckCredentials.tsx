@@ -2,11 +2,11 @@ import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import { useAuth } from "./SessionProvider";
 
-const useCheckCredentials = () => {
+const useCheckCredentials = (url: string) => {
   const user = useAuth();
   useEffect(() => {
     if (user?.user === null) {
-      redirect("/login");
+      redirect(url);
     }
   }, [user?.user]);
 };

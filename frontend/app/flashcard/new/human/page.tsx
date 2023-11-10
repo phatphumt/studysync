@@ -3,6 +3,7 @@ import { useAuth } from "@/app/SessionProvider";
 import { db } from "@/app/config/firebase";
 import useCheckCredentials from "@/app/useCheckCredentials";
 import { doc, setDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 import * as uuid from "uid";
 
@@ -16,9 +17,10 @@ const HumanFlashcard = () => {
   const [question, setQuestion] = useState("");
   const [answers, setAnswer] = useState("");
   const user = useAuth();
-  useCheckCredentials();
-  const [name, setName] = useState("");
+  useCheckCredentials("/flashcard/ai/human");
+  const [name, setName] = useState("untitled flashcard");
   const [nameBool, setNameBool] = useState(true);
+  const router = useRouter();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -37,8 +39,9 @@ const HumanFlashcard = () => {
     await setDoc(doc(db, "flashcards", uuid.uid(25)), docData);
     console.log("done");
     setData([]);
-    alert("saved to db");
     setName("");
+    alert("saved to db");
+    router.push('/flashcard/list')
   }
 
   function click() {
