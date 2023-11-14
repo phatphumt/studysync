@@ -2,7 +2,7 @@
 import { useAuth } from "@/app/SessionProvider";
 import { db } from "@/app/config/firebase";
 import useCheckCredentials from "@/app/useCheckCredentials";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 import * as uuid from "uid";
@@ -34,6 +34,7 @@ const HumanFlashcard = () => {
       flashcards: [...data],
       owner: uid,
       name: name,
+      createdAt: serverTimestamp(),
     };
     console.log(docData);
     await setDoc(doc(db, "flashcards", uuid.uid(25)), docData);
@@ -41,7 +42,7 @@ const HumanFlashcard = () => {
     setData([]);
     setName("");
     alert("saved to db");
-    router.push('/flashcard/list')
+    router.push("/flashcard/list");
   }
 
   function click() {

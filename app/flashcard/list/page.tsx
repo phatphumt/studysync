@@ -3,7 +3,14 @@
 import { useAuth } from "@/app/SessionProvider";
 import { db } from "@/app/config/firebase";
 import useCheckCredentials from "@/app/useCheckCredentials";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 
 const ListFlashcard = () => {
@@ -29,6 +36,9 @@ const ListFlashcard = () => {
           setDt(undefined);
           return;
         }
+        (acutualData as any[]).sort((a, b) =>
+          a.createdAt.seconds > b.createdAt.seconds ? -1 : 1
+        );
         setDt(acutualData);
       } catch (e) {
         console.error(e);
@@ -36,12 +46,12 @@ const ListFlashcard = () => {
       }
     }
     a();
-  }, [auth?.user?.uid]);
+  }, [auth?.user?.uid, dt]);
 
-  /*   async function deleteData(id) {
-      await deleteDoc(doc(db, ))
-    }
-   */
+  async function deleteData(id: string) {
+    await deleteDoc(doc(db, "flashcards", id));
+    setDt(undefined);
+  }
   return (
     <div className="p-10">
       {dt ? (
@@ -49,8 +59,23 @@ const ListFlashcard = () => {
           <div key={i.id}>
             <span className="font-bold text-xl">Flashcard ({i.name})</span>
             {"  "}
-            <span className="text-red-600 font-bold cursor-pointer select-none">del{"  "}</span>|<span className="text-green-700 font-bold cursor-pointer select-none" >{"  "}edit</span>
+            <span
+              className="text-red-600 font-bold cursor-pointer select-none"
+              onClick={() => deleteData(i.id)}
+            >
+              del{"  "}
+            </span>
+            |
+            <span className="text-green-700 font-bold cursor-pointer select-none">
+              {"  "}edit{"  "}
+            </span>
             <br />
+            <span>
+              {"  "}
+              {new Date(i.createdAt.seconds * 1000).toLocaleDateString()}
+              {"  "}
+              {new Date(i.createdAt.seconds * 1000).toLocaleTimeString()}
+            </span>
             {i.flashcards.map((i: any, ia: number) => (
               <div key={i.question}>
                 {ia + 1} - {i.question} | {i.answer}
