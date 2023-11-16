@@ -17,9 +17,9 @@ const HumanFlashcard = () => {
   const [question, setQuestion] = useState("");
   const [answers, setAnswer] = useState("");
   const user = useAuth();
-  useCheckCredentials("/flashcard/ai/human");
+  useCheckCredentials("/flashcard/new/human");
   const [name, setName] = useState("untitled flashcard");
-  const [nameBool, setNameBool] = useState(true);
+  // const [nameBool, setNameBool] = useState(true);
   const router = useRouter();
 
   async function handleSubmit(e: FormEvent) {
@@ -30,8 +30,9 @@ const HumanFlashcard = () => {
       return;
     }
     const uid: string = user?.user?.uid;
+    const dataWithID = data.map((i) => ({ ...i, id: uuid.uid() }));
     const docData = {
-      flashcards: [...data],
+      flashcards: [...dataWithID],
       owner: uid,
       name: name,
       createdAt: serverTimestamp(),
@@ -39,9 +40,6 @@ const HumanFlashcard = () => {
     console.log(docData);
     await setDoc(doc(db, "flashcards", uuid.uid(25)), docData);
     console.log("done");
-    setData([]);
-    setName("");
-    alert("saved to db");
     router.push("/flashcard/list");
   }
 
@@ -114,17 +112,7 @@ const HumanFlashcard = () => {
               setName(e.target.value);
             }}
             value={name}
-            disabled={!nameBool}
           />
-          <button
-            className="btn btn-xs mx-2"
-            onClick={() => {
-              setNameBool((prev) => !prev);
-            }}
-            type="button"
-          >
-            set name or edit
-          </button>
           <br />
           <div className="my-3">
             {data.length !== 0 ? (

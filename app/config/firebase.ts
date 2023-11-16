@@ -1,11 +1,6 @@
-
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCJ1v3sVQK0_m77IlCsU4A7wXMSXZ8Di3I",
   authDomain: "studysync-nsc.firebaseapp.com",
