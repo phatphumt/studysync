@@ -16,6 +16,7 @@ const LoginPage = () => {
 		password: '',
 	});
 	const [error, setError] = useState<null | string>(null);
+	const [loading, setLoading] = useState(false);
 	const user = useAuth();
 
 	useEffect(() => {
@@ -32,15 +33,17 @@ const LoginPage = () => {
 		console.log(credential.email[0], credential.password[0]);
 		const authEmail = email[0];
 		const authPassword = password[0];
-		console.log(authEmail, authPassword);
+		setLoading(true)
 		const a = await user
 			?.signIn(authEmail, authPassword)
 			.catch((e) => setError(e));
 		if (a != null) {
 			setError(a);
+      setLoading(false);
 			return;
 		}
 		setError(null);
+		setLoading(false)
 		console.log('success');
 	};
 
@@ -71,7 +74,7 @@ const LoginPage = () => {
 					className="input input-bordered input-primary w-full focus:outline-none"
 					onChange={handleChange}
 				/>
-				<Button className="btn-outline w-1/4">Login</Button>
+				<Button className="btn-outline w-1/4" disabled={loading}>Login</Button>
 			</form>
 			{error && <p className="font-bold text-red-500">{error}</p>}
 			<p>

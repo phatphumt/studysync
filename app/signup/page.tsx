@@ -18,6 +18,7 @@ const LoginPage = () => {
     confirmPassword: "",
   });
   const [error, setError] = useState<null | string>(null);
+  const [loading, setLoading] = useState(false);
   const user = useAuth();
 
   useEffect(() => {
@@ -31,6 +32,7 @@ const LoginPage = () => {
     { email, password, confirmPassword }: UserCreds
   ) => {
     e.preventDefault();
+    setLoading(true)
     console.log(email, password, confirmPassword);
     if (confirmPassword !== password) {
       setError("Passwords need to match");
@@ -41,8 +43,10 @@ const LoginPage = () => {
     const a = await user?.signUp(email, password).catch((e) => setError(e));
     if (a != null) {
       setError(a);
+      setLoading(false)
       return;
     }
+    setLoading(false)
     setError(null);
   };
 
@@ -80,12 +84,12 @@ const LoginPage = () => {
           className="input input-bordered input-primary w-full focus:outline-none"
           onChange={handleChange}
         />
-        <Button className="btn-outline w-1/4">Signup</Button>
+        <Button className="btn-outline w-1/4" disabled={loading}>Signup</Button>
       </form>
       {error && <p className="font-bold text-red-500">{error}</p>}
       <p>
         Already have an account?{" "}
-        <Link href="/signup" className="underline font-medium">
+        <Link href="/login" className="underline font-medium">
           Login
         </Link>{" "}
         here!
