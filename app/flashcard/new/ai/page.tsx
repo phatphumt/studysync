@@ -15,7 +15,7 @@ type Data = {
 type Body = { choices: string; topic: string };
 
 const FlashcardAIGen = () => {
-  useCheckCredentials("/flashcard/new/ai");
+  useCheckCredentials("/login");
   const [data, setData] = useState<Data[]>([]);
   const [body, setBody] = useState<Body>({ choices: "", topic: "" });
   const [error, setErorr] = useState<string | null>(null);

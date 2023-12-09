@@ -17,7 +17,7 @@ const HumanFlashcard = () => {
   const [question, setQuestion] = useState("");
   const [answers, setAnswer] = useState("");
   const user = useAuth();
-  useCheckCredentials("/flashcard/new/human");
+  useCheckCredentials("/login");
   const [name, setName] = useState("untitled flashcard");
   // const [nameBool, setNameBool] = useState(true);
   const router = useRouter();

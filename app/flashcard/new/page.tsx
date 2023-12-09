@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 const NewFlashcard = () => {
-  useCheckCredentials("/flashcard/new");
+  useCheckCredentials("/login");
   const r = useRouter();
   return (
     <div className="p-10">

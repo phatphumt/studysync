@@ -82,7 +82,7 @@ const ListFlashcard = () => {
             |
             <Link
               className="text-green-700 font-bold cursor-pointer select-none"
-              href={`/flashcard/list/${i.id}`}
+              href={`/flashcard/edit/${i.id}`}
             >
               {"  "}edit{"  "}
             </Link>
@@ -98,51 +98,7 @@ const ListFlashcard = () => {
                 {ia + 1} - {i.question} | {i.answer}
               </div>
             ))}
-            <button onClick={handleShow}>show the fucking modal</button>
-            <dialog ref={modalRef} className="modal">
-              <div className="modal-box">
-                <h3 className="font-bold text-2xl">
-                  Edit flashcard - {i.name}
-                </h3>
-                  {i.flashcards.map((i: any, ia: number) => (
-                    <div key={ia} className="my-1 mb-">
-                      <div>
-                        question:{"    "}
-                        <input
-                          type="text"
-                          defaultValue={i.question}
-                          className="input input-xs input-bordered input-primary focus:outline-none"
-                        />
-                      </div>
-                      <div>
-                        answer:{"    "}
-                        <input
-                          type="text"
-                          defaultValue={i.answer}
-                          className="input input-xs input-bordered input-primary focus:outline-none"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                <div className="modal-action">
-                  <form method="dialog">
-                    <button className="btn mx-3 btn-secondary" type="button">
-                      Save
-                    </button>
-                    <button
-                      className="btn"
-                      type="button"
-                      onClick={() => {
-                        if (confirm("close this shit?"))
-                          modalRef.current?.close();
-                      }}
-                    >
-                      Close
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </dialog>
+            <Link href={`/flashcard/play/${i.id}`}>play this shit</Link>
           </div>
         ))
       ) : (
