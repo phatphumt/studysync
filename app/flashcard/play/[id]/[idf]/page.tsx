@@ -1,5 +1,5 @@
 import { db } from '@/app/config/firebase'
-import { query, collection, where, getDoc, getDocs, doc } from 'firebase/firestore'
+import { getDoc, doc } from 'firebase/firestore'
 import Link from 'next/link'
 import React from 'react'
 import FlashcardPlayer from './FlashcardPlayer'
@@ -22,7 +22,7 @@ const FlashcardPlayerPage = async ({ params, searchParams }: { params: { idf: st
   console.log(as.flashcards[next + 1])
   return (
     <div className='p-6 flex flex-col gap-3 justify-center items-center'>
-      <FlashcardPlayer {...(current as { answer: string, question: string, id: string })} isLast={isLast} next={as.flashcards[next + 1].id} flashcardID={searchParams.flashcardID} />
+      <FlashcardPlayer {...(current as { answer: string, question: string, id: string })}/>
       
       {isLast ? (
         <div>

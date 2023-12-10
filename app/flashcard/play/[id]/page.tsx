@@ -1,10 +1,8 @@
 import { doc, getDoc } from 'firebase/firestore';
 import React from 'react'
 import { db } from '../../../config/firebase'
-import FlashcardPlayer from './FlashcardPlayer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 
 type Data = {
   owner: string,

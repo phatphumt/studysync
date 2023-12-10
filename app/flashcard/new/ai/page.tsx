@@ -2,7 +2,7 @@
 import { useAuth } from "@/app/SessionProvider";
 import { db } from "@/app/config/firebase";
 import useCheckCredentials from "@/app/useCheckCredentials";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import * as uuid from "uid";
@@ -10,6 +10,7 @@ import * as uuid from "uid";
 type Data = {
   question: string;
   answer: string;
+  id: string;
 };
 
 type Body = { choices: string; topic: string };
@@ -84,10 +85,12 @@ const FlashcardAIGen = () => {
     console.log("adding");
     if (!user?.user?.uid) return;
     const uid: string = user?.user?.uid;
+    const dataWithId = data.map(i => ({...i, id: uuid.uid(10)}))
     const docData = {
-      flashcards: [...data],
+      flashcards: [...dataWithId],
       owner: uid,
       name: `${body.topic} flashcard`,
+      createdAt: serverTimestamp()
     };
     console.log(docData);
     await setDoc(doc(db, "flashcards", uuid.uid(25)), docData);

@@ -1,10 +1,11 @@
 "use client"
-import Link from 'next/link'
+import useCheckCredentials from '@/app/useCheckCredentials'
 import React, { useState } from 'react'
 
-type Props = { answer: string, question: string, id: string, isLast: boolean, flashcardID: string, next: string}
+type Props = { answer: string, question: string, id: string}
 
-const FlashcardPlayer = ({ question, answer, isLast, flashcardID, next }: Props) => {
+const FlashcardPlayer = ({ question, answer }: Props) => {
+  useCheckCredentials('/flashcard/list')
   const [flipped, setFlipped] = useState(false)
   return (
     <>

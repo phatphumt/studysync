@@ -3,6 +3,7 @@
 import { useAuth } from "@/app/SessionProvider";
 import { db } from "@/app/config/firebase";
 import useCheckCredentials from "@/app/useCheckCredentials";
+import { data } from "autoprefixer";
 import {
   collection,
   deleteDoc,
@@ -12,18 +13,12 @@ import {
   where,
 } from "firebase/firestore";
 import Link from "next/link";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ListFlashcard = () => {
   useCheckCredentials("/flashcard/list");
   const auth = useAuth();
-  const [dt, setDt] = useState<undefined | any[]>();
-  // const [editing, setEditing] = useState(true);
-
-  const modalRef = useRef<HTMLDialogElement>(null);
-  const handleShow = useCallback(() => {
-    modalRef.current?.showModal();
-  }, [modalRef]);
+  const [dt, setDt] = useState<undefined | any[] | null>(undefined);
 
   async function getFromDB(userId: string | undefined) {
     try {
@@ -40,7 +35,7 @@ const ListFlashcard = () => {
         id: doc.id,
       }));
       if (acutualData.length < 1) {
-        setDt(undefined);
+        setDt(null);
         return;
       }
       (acutualData as any[]).sort((a, b) =>
@@ -62,17 +57,13 @@ const ListFlashcard = () => {
     getFromDB(auth?.user?.uid);
   }
 
-  /* async function updateData(id: string) {
-    await updateDoc(doc(db, "flashcards", id), {});
-  } */
-
   return (
     <div className="p-10">
       {dt ? (
         dt.map((i: any) => (
           <div key={i.id}>
-            <span className="font-bold text-xl">Flashcard ({i.name})</span>
-            {"  "}
+            <span className="font-bold text-2xl">Flashcard ({i.name})</span>
+            {"       "}
             <span
               className="text-red-600 font-bold cursor-pointer select-none"
               onClick={() => deleteData(i.id)}
@@ -88,21 +79,25 @@ const ListFlashcard = () => {
             </Link>
             <br />
             <span>
+              Created at:
               {"  "}
               {new Date(i.createdAt.seconds * 1000).toLocaleDateString()}
               {"  "}
               {new Date(i.createdAt.seconds * 1000).toLocaleTimeString()}
             </span>
-            {i.flashcards.map((i: any, ia: number) => (
-              <div key={i.question}>
-                {ia + 1} - {i.question} | {i.answer}
-              </div>
-            ))}
-            <Link href={`/flashcard/play/${i.id}`}>play this shit</Link>
+            <br />
+            <Link
+              href={`/flashcard/play/${i.id}`}
+              className="text-xl font-semibold"
+            >
+              PLAY NOW!!!
+            </Link>
           </div>
         ))
-      ) : (
+      ) : data === null ? (
         <p>You have no flashcards</p>
+      ) : (
+        <p>loading...</p>
       )}
     </div>
   );
