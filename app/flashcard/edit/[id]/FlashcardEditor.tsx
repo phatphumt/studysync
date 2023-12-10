@@ -1,5 +1,5 @@
-"use client"
-import React, { useState } from 'react'
+"use client";
+import React from "react";
 
 /* 
 
@@ -15,31 +15,38 @@ import React, { useState } from 'react'
 */
 
 type Props = {
-  owner: string,
-  createdAt:
-  { seconds: number, nanoseconds: number },
-  flashcards: [
-    { answer: string, question: string, id: string },
-  ],
-  name: string,
-}
+  owner: string;
+  createdAt: { seconds: number; nanoseconds: number };
+  flashcards: [{ answer: string; question: string; id: string }];
+  name: string;
+};
 
 const FlashcardEditor = ({ flashcards }: Props) => {
-  const [dat, setDat] = useState(flashcards)
+  // const [dat, setDat] = useState(flashcards)
   return (
     <div className="p-3">
-      {flashcards.map((i, ia) => (
-        <div key={i.id} className='pb-3'>
+      {flashcards.map((i) => (
+        <div key={i.id} className="pb-3">
           <label htmlFor="question">Question: </label>
-          <input type="text" defaultValue={i.question} id="question" className="input input-bordered input-primary input-xs mr-2"/>
+          <input
+            type="text"
+            defaultValue={i.question}
+            id="question"
+            className="input input-bordered input-primary input-xs mr-2"
+          />
           <label htmlFor="answer">Answer: </label>
-          <input type="text" defaultValue={i.answer} id="answer" className="input input-bordered input-primary input-xs mr-2"/>
+          <input
+            type="text"
+            defaultValue={i.answer}
+            id="answer"
+            className="input input-bordered input-primary input-xs mr-2"
+          />
           {i.question} | {i.answer}
         </div>
       ))}
-      <button className='btn btn-outlined btn-primary'>Submit</button>
+      <button className="btn btn-outlined btn-primary">Submit</button>
     </div>
-  )
-}
+  );
+};
 
-export default FlashcardEditor
+export default FlashcardEditor;
