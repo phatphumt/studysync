@@ -95,9 +95,9 @@ const ListFlashcard = () => {
           </div>
         ))
       ) : data === null ? (
-        <p>You have no flashcards</p>
-      ) : (
         <p>loading...</p>
+      ) : (
+        <p>You have no flashcards</p>
       )}
     </div>
   );

@@ -1,36 +1,54 @@
-import { db } from '@/app/config/firebase'
-import { getDoc, doc } from 'firebase/firestore'
-import Link from 'next/link'
-import React from 'react'
-import FlashcardPlayer from './FlashcardPlayer'
+import FlashcardPlayer from "./FlashcardPlayer";
 
-type Data = {
-  flashcards: [
-    { answer: string, question: string, id: string },
-  ]
-}
+const FlashcardPlayerPage = ({ params }: { params: { idf: string } }) => {
+  // console.log(searchParams.flashcardID);
+  /*const flashcardID = localStorage.getItem("id");
 
-const FlashcardPlayerPage = async ({ params, searchParams }: { params: { idf: string }, searchParams: { flashcardID: string } }) => {
-  console.log(searchParams.flashcardID)
-  const docc = doc(db, "flashcards", searchParams.flashcardID);
-  const data = await getDoc(docc)
-  const as: Data = (data.data() as Data)
-  const current = as.flashcards.find(i => i.id === params.idf)
-  const isLast = as.flashcards.length - 1 != as.flashcards.indexOf((current as { answer: string, question: string, id: string }))
-  const next = as.flashcards.findIndex(i => i.id === params.idf)
-  console.log(next + 1)
-  console.log(as.flashcards[next + 1])
+  useEffect(() => {
+    async function doit() {
+      const docc = doc(db, "flashcards");
+      const data = await getDoc(docc);
+      setData(data.data() as Data);
+      console.log(data.data());
+    }
+    doit();
+  }, []); */
+
+  /* 
+    searchParams: {
+      flashcardID: string;
+      sessionID: string;
+      correct: string;
+      wrong: string;
+    };
+  */
+
   return (
-    <div className='p-6 flex flex-col gap-3 justify-center items-center'>
-      <FlashcardPlayer {...(current as { answer: string, question: string, id: string })}/>
-      
-      {isLast ? (
+    <div className="p-6 flex flex-col gap-3 justify-center items-center">
+      <FlashcardPlayer currentID={params.idf} />
+      {/* {isLast ? (
         <div>
-          <Link href={{ pathname: `/flashcard/play/${searchParams.flashcardID}/${as.flashcards[next+1].id}`, query: { flashcardID: searchParams.flashcardID } }}>Next</Link>
+          <Link
+            href={{
+              pathname: `/flashcard/play/${searchParams.flashcardID}/${
+                as.flashcards[next + 1].id
+              }`,
+              query: {
+                flashcardID: searchParams.flashcardID,
+                correct: 0,
+                wrong: 0,
+                sessionID: searchParams.sessionID,
+              },
+            }}
+          >
+            Next
+          </Link>
         </div>
-      ) : <Link href={'/flashcard/list'}>Back</Link>}
+      ) : (
+        <Link href={"/flashcard/summary/012"}>Summary</Link>
+      )} */}
     </div>
-  )
-}
+  );
+};
 
-export default FlashcardPlayerPage
+export default FlashcardPlayerPage;
