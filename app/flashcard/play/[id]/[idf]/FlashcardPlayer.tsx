@@ -1,7 +1,6 @@
 "use client";
 import useCheckCredentials from "@/app/useCheckCredentials";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 type Dataa = {
@@ -14,6 +13,7 @@ type Dataa = {
 
 const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
   useCheckCredentials("/flashcard/list");
+  const { push } = useRouter();
   const [flipped, setFlipped] = useState(false);
   const [data, setData] = useState<Dataa>({
     sessionID: "",
@@ -26,7 +26,7 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
     answer: string;
     question: string;
     id: string;
-  }>();
+  }>({ answer: "", question: "", id: "" });
 
   useEffect(() => {
     const data = localStorage.getItem("hello");
@@ -35,28 +35,56 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
     }
     const dataa: Dataa = JSON.parse(data);
     setData(dataa);
-    setCurr(dataa.flashcards.find((e) => e.id === currentID));
+    setCurr(
+      dataa.flashcards.find((e) => e.id === currentID) as {
+        answer: string;
+        question: string;
+        id: string;
+      }
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleCorrect() {
-    setData((prev) => {
-      return { ...prev, correct: prev.correct + 1 };
-    });
+    const dataaa = { ...data, correct: data.correct + 1 };
+    if (!dataaa) {
+      return;
+    }
+    localStorage.setItem("hello", JSON.stringify(dataaa as any));
     if (
       !data.flashcards[data.flashcards.findIndex((e) => e.id === currentID) + 1]
     ) {
-      redirect("/");
+      push(`/flashcard/summary/${data.id}`);
+      return;
     }
-    redirect();
+    push(
+      `/flashcard/play/${data.id}/${
+        data.flashcards[
+          data.flashcards.findIndex((e) => e.id === currentID) + 1
+        ].id
+      }`
+    );
   }
 
   function handleWrong() {
-    setData((prev) => {
-      return { ...prev, wrong: prev.wrong + 1 };
-    });
-    // redirect(`/flashcard/play/${flashcardID}/${next}`)
-    console.log(data);
+    const dataaa = { ...data, wrong: data.wrong + 1 };
+    if (!dataaa) {
+      return;
+    }
+    localStorage.setItem("hello", JSON.stringify(dataaa as any));
+    if (
+      !data.flashcards[data.flashcards.findIndex((e) => e.id === currentID) + 1]
+    ) {
+      push(`/flashcard/summary/${data.id}`);
+      return;
+    }
+    push(
+      `/flashcard/play/${data.id}/${
+        data.flashcards[
+          data.flashcards.findIndex((e) => e.id === currentID) + 1
+        ].id
+      }`
+    );
   }
 
   return (
@@ -76,21 +104,13 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
         </div>
         <div className="swap-on">
           <p className="text-3xl">{curr?.answer}</p>
-          <Link
-            href={`/flashcard/play/${data.id}/${
-              data.flashcards[
-                data.flashcards.findIndex((e) => e.id === currentID) + 1
-              ].id
-            }`}
+          <button
+            className="btn btn-xs btn-info mr-3 transition-all active:scale-95"
+            type="button"
+            onClick={handleCorrect}
           >
-            <button
-              className="btn btn-xs btn-info mr-3 transition-all active:scale-95"
-              type="button"
-              onClick={handleCorrect}
-            >
-              correct
-            </button>
-          </Link>
+            correct
+          </button>
           <button
             className="btn btn-xs btn-info mr-3 transition-all active:scale-95"
             type="button"
@@ -107,6 +127,20 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
           </button>
         </div>
       </label>
+
+      <button
+        className="btn"
+        onClick={() => {
+          const data = localStorage.getItem("hello");
+          if (!data) {
+            console.log("null");
+            return;
+          }
+          console.log(JSON.parse(data as string));
+        }}
+      >
+        get localStorage data
+      </button>
     </>
   );
 };
