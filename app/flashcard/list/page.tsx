@@ -1,60 +1,15 @@
-"use client";
-
-import { useAuth } from "@/app/SessionProvider";
-import { db } from "@/app/config/firebase";
-import useCheckCredentials from "@/app/useCheckCredentials";
 import { data } from "autoprefixer";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 
 const ListFlashcard = () => {
-  useCheckCredentials("/flashcard/list");
-  const auth = useAuth();
-  const [dt, setDt] = useState<undefined | any[] | null>(undefined);
+  const dt: any = [];
 
-  async function getFromDB(userId: string | undefined) {
-    try {
-      console.log("started fectching");
-      if (!userId) {
-        throw new Error("user id cannot be null or undefiend");
-      }
-      const uid: string = userId;
-      const data = await getDocs(
-        query(collection(db, "/flashcards"), where("owner", "==", uid))
-      );
-      const acutualData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      if (acutualData.length < 1) {
-        setDt(null);
-        return;
-      }
-      (acutualData as any[]).sort((a, b) =>
-        a.createdAt.seconds > b.createdAt.seconds ? -1 : 1
-      );
-      setDt(acutualData);
-    } catch (e) {
-      console.error(e);
-      alert(`error: ${e}`);
-    }
+  async function getFromDB() {
+    console.log("getting from db");
   }
 
-  useEffect(() => {
-    getFromDB(auth?.user?.uid);
-  }, [auth?.user?.uid]);
-
   async function deleteData(id: string) {
-    await deleteDoc(doc(db, "flashcards", id));
-    getFromDB(auth?.user?.uid);
+    console.log("deleting", id);
   }
 
   return (

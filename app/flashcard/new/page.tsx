@@ -1,27 +1,24 @@
-"use client";
-import useCheckCredentials from "@/app/useCheckCredentials";
-import { useRouter } from "next/navigation";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import Link from "next/link";
+import { redirect, useRouter } from "next/navigation";
 import React from "react";
 
-const NewFlashcard = () => {
-  useCheckCredentials("/login");
-  const r = useRouter();
+const NewFlashcard = async () => {
+  const { isAuthenticated } = getKindeServerSession();
+  const loggedIn = await isAuthenticated();
+  if (!loggedIn) {
+    redirect("/api/auth/login");
+  }
   return (
     <div className="p-10">
-      <button
-        className="btn font-bold"
-        onClick={() => r.push("/flashcard/new/ai")}
-      >
+      <Link className="font-bold" href="/flashcard/new/ai">
         AI
-      </button>
+      </Link>
       <br />
       <br />
-      <button
-        className="btn font-bold"
-        onClick={() => r.push("/flashcard/new/human")}
-      >
+      <Link className="font-bold" href="/flashcard/new/human">
         Human
-      </button>
+      </Link>
     </div>
   );
 };

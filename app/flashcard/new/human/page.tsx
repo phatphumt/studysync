@@ -1,47 +1,18 @@
 "use client";
-import { useAuth } from "@/app/SessionProvider";
-import { db } from "@/app/config/firebase";
-import useCheckCredentials from "@/app/useCheckCredentials";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
-import * as uuid from "uid";
-
+import { addToDB } from "@/app/config/actions";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import React, { useState } from "react";
 type Flashcard = {
   question: string;
   answer: string;
 };
 
 const HumanFlashcard = () => {
+  const { user } = useKindeBrowserClient();
   const [data, setData] = useState<Flashcard[]>([]);
   const [question, setQuestion] = useState("");
   const [answers, setAnswer] = useState("");
-  const user = useAuth();
-  useCheckCredentials("/login");
   const [name, setName] = useState("untitled flashcard");
-  // const [nameBool, setNameBool] = useState(true);
-  const router = useRouter();
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!user?.user?.uid) return;
-    if (name === "") {
-      alert("names can't be empty");
-      return;
-    }
-    const uid: string = user?.user?.uid;
-    const dataWithID = data.map((i) => ({ ...i, id: uuid.uid() }));
-    const docData = {
-      flashcards: [...dataWithID],
-      owner: uid,
-      name: name,
-      createdAt: serverTimestamp(),
-    };
-    console.log(docData);
-    await setDoc(doc(db, "flashcards", uuid.uid(25)), docData);
-    console.log("done");
-    router.push("/flashcard/list");
-  }
 
   function click() {
     if (question === "" || answers === "") return;
@@ -100,7 +71,11 @@ const HumanFlashcard = () => {
             clear
           </button>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form
+          action={() => {
+            addToDB(data, user?.id as string, name);
+          }}
+        >
           <span className="font-bold text-xl">Flashcard {name}</span>
           <br />
           <input

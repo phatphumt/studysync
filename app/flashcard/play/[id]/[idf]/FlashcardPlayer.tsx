@@ -1,5 +1,4 @@
 "use client";
-import useCheckCredentials from "@/app/useCheckCredentials";
 import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -12,7 +11,6 @@ type Dataa = {
 };
 
 const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
-  useCheckCredentials("/flashcard/list");
   const { push } = useRouter();
   const [flipped, setFlipped] = useState(false);
   const [data, setData] = useState<Dataa>({
