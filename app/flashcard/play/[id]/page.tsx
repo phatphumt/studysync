@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import CallToDB from "./CallToDB";
+import FlashcardSchema from "@/app/models/FlashcardSchema";
 
 /* type Data = {
   owner: string;
@@ -18,7 +19,7 @@ const PlayFlashcard = async ({ params }: { params: { id: string } }) => {
   /*  const docc = doc(db, "flashcards", params.id);
   const data = await getDoc(docc);
   const as: Data = data.data() as Data; */
-  const as: any = undefined;
+  const as = await FlashcardSchema.findById(params.id);
   return (
     <div className="flex justify-center items-center h-[91vh] flex-col">
       <h1 className="font-semibold text-3xl">start now!!!</h1>
@@ -36,7 +37,7 @@ const PlayFlashcard = async ({ params }: { params: { id: string } }) => {
           />
         );
       })}
-      <CallToDB id={params.id} next={as.flashcards[0].id} />
+      <CallToDB id={params.id} data={as} />
     </div>
   );
 };

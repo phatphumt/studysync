@@ -27,10 +27,7 @@ const FlashcardHome = () => {
           >
             <span className="font-semibold text-3xl">Your flashcard</span>{" "}
             <span className="material-icons-outlined big">folder_open</span>
-            <span>
-              สร้าง Flashcard อันใหม่ <br />
-              เพื่อทบทวนบทเรียนของคุณ
-            </span>
+            <span>ทบทวน</span>
           </div>
         </div>
       </div>

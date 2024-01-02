@@ -1,4 +1,6 @@
 "use client";
+import { addSessionToDB } from "@/app/config/flashcardActions";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 type Dataa = {
@@ -12,18 +14,40 @@ type Dataa = {
 const SummaryPage = () => {
   const [data, setData] = useState<Dataa | null>(null);
   useEffect(() => {
-    const data = localStorage.getItem("hello");
-    if (!data) {
+    const savedData = localStorage.getItem("hello");
+
+    if (!savedData) {
+      // No data found in localStorage
       setData(null);
+      return;
     }
-    setData(JSON.parse(data as string));
+
+    const parsedData: Dataa = JSON.parse(savedData);
+    setData(parsedData);
+
+    async function fetchData(savingData: Dataa) {
+      try {
+        await addSessionToDB(savingData);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchData(parsedData);
+    localStorage.removeItem("hello");
   }, []);
+
   return (
-    <>
-      {data ? <div>
-        <p>correct: {data.correct}</p>
-        <p>wrong: {data.wrong}</p>
-      </div> : <div>null</div>}
+    <div className="flex h-[90vh] justify-center items-center flex-col text-center">
+      <h1 className="font-bold text-3xl">Summary</h1>
+      {data ? (
+        <div>
+          <p>correct: {data.correct}</p>
+          <p>wrong: {data.wrong}</p>
+        </div>
+      ) : (
+        <div>null</div>
+      )}
       <button
         className="btn m-3"
         onClick={() => {
@@ -37,7 +61,10 @@ const SummaryPage = () => {
       >
         get localStorage data
       </button>
-    </>
+      <Link href="/flashcard/list">
+        <button className="btn btn-success btn-xs">Done</button>
+      </Link>
+    </div>
   );
 };
 

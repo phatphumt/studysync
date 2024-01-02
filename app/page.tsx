@@ -12,11 +12,6 @@ type Items = {
 const Home = () => {
   const items: Items[] = [
     {
-      title: "วางแผน",
-      icon: "assignment",
-      desc: ["วางแผนการเรียนด้วย", "To-Do list ของเรา"],
-    },
-    {
       title: "เรียน",
       icon: "local_library",
       desc: ["เพิ่มโฟกัสด้วย", "Pomodoro Technique"],

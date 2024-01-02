@@ -1,6 +1,20 @@
-import Flashcard from '@/app/models/FlashcardSchema'
+import Flashcard from "@/app/models/FlashcardSchema";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import Link from "next/link";
+import DeleteButton from "./DeleteButton";
+import { connect } from "mongoose";
 
-const ListFlashcard = () => {
+type Data = {
+  _id: string;
+  name: string;
+  owner: string;
+  flashcards: [];
+  createdAt: string;
+  updatedAt: string;
+};
+
+const ListFlashcard = async () => {
+  const { getUser } = getKindeServerSession();
   /* 
   const dt: any = [];
 
@@ -12,51 +26,42 @@ const ListFlashcard = () => {
     console.log("deleting", id);
   }
  */
-  Flashcard.find().then(r => console.log(r))
+  const user = await getUser();
+  await connect(process.env.MONGO_URI as string);
+  const data: Data[] = await Flashcard.find({ owner: user?.id }).sort({
+    createdAt: "desc",
+  });
+  console.log(data);
   return (
-    <div>hellow</div>
-   /*  <div className="p-10">
-      {dt ? (
-        dt.map((i: any) => (
-          <div key={i.id}>
+    <div className="p-10">
+      {data.length !== 0 ? (
+        data.map((i) => (
+          <div key={i._id}>
             <span className="font-bold text-2xl">Flashcard ({i.name})</span>
             {"       "}
-            <span
-              className="text-red-600 font-bold cursor-pointer select-none"
-              onClick={() => deleteData(i.id)}
-            >
-              del{"  "}
-            </span>
-            |
-            <Link
-              className="text-green-700 font-bold cursor-pointer select-none"
-              href={`/flashcard/edit/${i.id}`}
-            >
-              {"  "}edit{"  "}
+            <DeleteButton id={i._id} />
+            {"  "}
+            <p>
+              Created At: {new Date(i.createdAt).toLocaleDateString()}{" "}
+              {new Date(i.createdAt).toLocaleTimeString()}
+            </p>
+            <Link href={`/flashcard/history/${i._id}`}>
+              View your history here
             </Link>
             <br />
-            <span>
-              Created at:
-              {"  "}
-              {new Date(i.createdAt.seconds * 1000).toLocaleDateString()}
-              {"  "}
-              {new Date(i.createdAt.seconds * 1000).toLocaleTimeString()}
-            </span>
-            <br />
             <Link
-              href={`/flashcard/play/${i.id}`}
+              href={`/flashcard/play/${i._id}`}
               className="text-xl font-semibold"
             >
               PLAY NOW!!!
             </Link>
+            <br />
           </div>
         ))
-      ) : data === null ? (
-        <p>loading...</p>
       ) : (
         <p>You have no flashcards</p>
       )}
-    </div> */
+    </div>
   );
 };
 

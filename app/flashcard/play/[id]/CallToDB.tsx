@@ -2,39 +2,29 @@
 import Link from "next/link";
 import * as uuid from "uid";
 
-/* type Data = {
+type Data = {
+  _id: string;
   flashcards: { answer: string; question: string; id: string }[];
   owner: string;
   name: string;
-  createdAt: { seconds: number; nanoseconds: number };
+  createdAt: string;
 };
- */
-const CallToDB = ({ id }: { id: string; next: any }) => {
+
+const CallToDB = ({ id, data }: { id: string; data: Data }) => {
   const sessionID = uuid.uid(15);
   async function click() {
-    /* const docData = {
-      owner: null,
-      timePlayed: serverTimestamp(),
-      flashcard: id,
-    }; */
-    /* await setDoc(doc(db, "flashcards-stats", sessionID), docData);
-
-    const docc = doc(db, "flashcards", id);
-    const dataa = await getDoc(docc);
-    const theFlashcards = dataa.data() as Data;
-    const localStorageData = theFlashcards.flashcards; */
-    const data = {
+    const thedata = {
       sessionID,
       correct: 0,
       wrong: 0,
-      flashcards: undefined,
+      flashcards: data.flashcards,
       id,
     };
-    localStorage.setItem("hello", JSON.stringify(data));
+    localStorage.setItem("hello", JSON.stringify(thedata));
   }
   return (
     <>
-      <Link href={`/flashcard/play/${id}/${"a"}`}>
+      <Link href={`/flashcard/play/${id}/${data.flashcards[0].id}`}>
         <button className="btn btn-primary btn-outline" onClick={click}>
           add
         </button>

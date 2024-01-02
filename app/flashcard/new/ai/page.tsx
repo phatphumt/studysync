@@ -1,8 +1,8 @@
 "use client";
 
-import { addToDB, generateFlashcard } from "@/app/config/actions";
+import { addToDB, generateFlashcard } from "@/app/config/flashcardActions";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { uid } from "uid";
 
 type Flashcards = {
@@ -14,13 +14,16 @@ const FlashcardAIGen = () => {
   const { user } = useKindeBrowserClient();
   const [d, setD] = useState<Flashcards[]>([]);
   const [topic, setTopic] = useState<string>("");
+  const [pending, setPending] = useState(false);
   return (
-    <div className="p-5">
+    <div className={pending ? "p-5" : ""}>
       <form
         action={async (e) => {
+          setPending(true);
           const a = await generateFlashcard(e);
           const data = JSON.parse(a);
           setD(data as Flashcards[]);
+          setPending(false);
         }}
       >
         <input
@@ -39,7 +42,7 @@ const FlashcardAIGen = () => {
         />
         <br />
         <br />
-        <button type="submit" className="btn">
+        <button type="submit" className="btn" disabled={!!pending}>
           get the fucking data
         </button>
         <br />

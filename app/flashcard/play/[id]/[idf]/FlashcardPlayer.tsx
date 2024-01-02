@@ -40,6 +40,7 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
         id: string;
       }
     );
+    console.log(dataa);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -125,20 +126,6 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
           </button>
         </div>
       </label>
-
-      <button
-        className="btn"
-        onClick={() => {
-          const data = localStorage.getItem("hello");
-          if (!data) {
-            console.log("null");
-            return;
-          }
-          console.log(JSON.parse(data as string));
-        }}
-      >
-        get localStorage data
-      </button>
     </>
   );
 };
