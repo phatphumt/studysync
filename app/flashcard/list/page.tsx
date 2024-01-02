@@ -1,7 +1,7 @@
-import { data } from "autoprefixer";
-import Link from "next/link";
+import Flashcard from '@/app/models/FlashcardSchema'
 
 const ListFlashcard = () => {
+  /* 
   const dt: any = [];
 
   async function getFromDB() {
@@ -11,9 +11,11 @@ const ListFlashcard = () => {
   async function deleteData(id: string) {
     console.log("deleting", id);
   }
-
+ */
+  Flashcard.find().then(r => console.log(r))
   return (
-    <div className="p-10">
+    <div>hellow</div>
+   /*  <div className="p-10">
       {dt ? (
         dt.map((i: any) => (
           <div key={i.id}>
@@ -54,7 +56,7 @@ const ListFlashcard = () => {
       ) : (
         <p>You have no flashcards</p>
       )}
-    </div>
+    </div> */
   );
 };
 

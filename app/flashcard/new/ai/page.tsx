@@ -1,52 +1,35 @@
-import OpenAI from "openai";
+"use client";
+
+import { addToDB, generateFlashcard } from "@/app/config/actions";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { useRef, useState } from "react";
+import { uid } from "uid";
+
+type Flashcards = {
+  question: string;
+  answer: string;
+};
 
 const FlashcardAIGen = () => {
-  async function addToDB(formData: FormData) {
-    "use server";
-    console.log("adding");
-    const choices = formData.get("choices");
-    const topic = formData.get("topic");
-    console.log(topic, choices);
-    const ai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    try {
-      const data = await ai.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: `you are a flashcard generator. you will get the amount of flashcard that you will generate and the topic amount that question. return to user with the following json document format without deviation. \n
-              [
-                {
-                  "question": "The question",
-                  "answer": "The answer"
-                },
-                {
-                  "question": "The question",
-                  "answer": "The answer"
-                },
-                ...the rest of the flashcards
-              ]
-            `,
-          },
-          {
-            role: "user",
-            content: `Topic: ${topic}\nAmount of flashcard: ${choices}`,
-          },
-        ],
-        model: "gpt-3.5-turbo",
-      });
-      console.log(data.choices[0].message.content as string);
-    } catch (e) {
-      throw new Error(`${e}`);
-    }
-  }
+  const { user } = useKindeBrowserClient();
+  const [d, setD] = useState<Flashcards[]>([]);
+  const [topic, setTopic] = useState<string>("");
   return (
     <div className="p-5">
-      <form action={addToDB}>
+      <form
+        action={async (e) => {
+          const a = await generateFlashcard(e);
+          const data = JSON.parse(a);
+          setD(data as Flashcards[]);
+        }}
+      >
         <input
           type="text"
           name="topic"
           placeholder="topic"
           className="input input-bordered input-primary w-[10%] focus:outline-none"
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
         />
         <input
           type="text"
@@ -58,6 +41,30 @@ const FlashcardAIGen = () => {
         <br />
         <button type="submit" className="btn">
           get the fucking data
+        </button>
+        <br />
+        {d && (
+          <div>
+            {d.map((i) => (
+              <p key={uid(2)}>
+                <span className="text-lg font-semibold">{i.question}</span>
+                <br />
+                {i.answer}
+                <br />
+              </p>
+            ))}
+          </div>
+        )}
+        <br />
+        <button
+          className="btn"
+          onClick={async () => {
+            addToDB(d, user?.id as string, topic);
+          }}
+          type="button"
+          disabled={d.length === 0}
+        >
+          ADD to db
         </button>
       </form>
     </div>
