@@ -1,59 +1,65 @@
-"use client";
-import { useRouter } from "next/navigation";
-import * as uuid from "uid";
-
-type Data = {
-  question: string;
-  answer: string;
-};
-
-type Body = { choices: string; topic: string };
+import OpenAI from "openai";
 
 const FlashcardAIGen = () => {
-  const router = useRouter();
-  const dataa: Data[] = [];
-  async function ai() {}
-
-  async function addToDB() {
+  async function addToDB(formData: FormData) {
+    "use server";
     console.log("adding");
-    router.push("/flashcard/list");
+    const choices = formData.get("choices");
+    const topic = formData.get("topic");
+    console.log(topic, choices);
+    const ai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    try {
+      const data = await ai.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: `you are a flashcard generator. you will get the amount of flashcard that you will generate and the topic amount that question. return to user with the following json document format without deviation. \n
+              [
+                {
+                  "question": "The question",
+                  "answer": "The answer"
+                },
+                {
+                  "question": "The question",
+                  "answer": "The answer"
+                },
+                ...the rest of the flashcards
+              ]
+            `,
+          },
+          {
+            role: "user",
+            content: `Topic: ${topic}\nAmount of flashcard: ${choices}`,
+          },
+        ],
+        model: "gpt-3.5-turbo",
+      });
+      console.log(data.choices[0].message.content as string);
+    } catch (e) {
+      throw new Error(`${e}`);
+    }
   }
-
   return (
     <div className="p-5">
-      <form action={ai}>
+      <form action={addToDB}>
         <input
           type="text"
           name="topic"
           placeholder="topic"
           className="input input-bordered input-primary w-[10%] focus:outline-none"
         />
-        {"     "}
         <input
-          type="number"
+          type="text"
           name="choices"
           placeholder="choices"
           className="input input-bordered input-primary w-[10%] focus:outline-none"
         />
         <br />
         <br />
-        <button className="btn mb-5">get custom data</button>
+        <button type="submit" className="btn">
+          get the fucking data
+        </button>
       </form>
-      {dataa ? (
-        <div>
-          {dataa.map((i, ii) => (
-            <div key={ii}>
-              <p className="font-bold">{i.question}</p>
-              <p className="text-sm">{i.answer}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>loading or no data</p>
-      )}
-      <button className="btn btn-sm mx-3" onClick={addToDB}>
-        add to db
-      </button>
     </div>
   );
 };
