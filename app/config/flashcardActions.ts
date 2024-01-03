@@ -15,8 +15,8 @@ type Flashcards = {
 
 type FlashcardSession = {
   sessionID: string;
-  correct: number;
-  wrong: number;
+  correct: string[];
+  wrong: string[];
   flashcards: { answer: string; question: string; id: string }[];
   id: string;
 };

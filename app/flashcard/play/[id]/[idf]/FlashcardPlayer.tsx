@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 
 type Dataa = {
   sessionID: string;
-  correct: number;
-  wrong: number;
+  correct: string[];
+  wrong: string[];
   flashcards: { answer: string; question: string; id: string }[];
   id: string;
 };
@@ -15,8 +15,8 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
   const [flipped, setFlipped] = useState(false);
   const [data, setData] = useState<Dataa>({
     sessionID: "",
-    correct: 0,
-    wrong: 0,
+    correct: [],
+    wrong: [],
     flashcards: [],
     id: "",
   });
@@ -45,11 +45,15 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
   }, []);
 
   function handleCorrect() {
-    const dataaa = { ...data, correct: data.correct + 1 };
+    const dataaa = [...data.correct, currentID];
     if (!dataaa) {
       return;
     }
-    localStorage.setItem("hello", JSON.stringify(dataaa as any));
+    const datata = {
+      ...data,
+      correct: dataaa
+    }
+    localStorage.setItem("hello", JSON.stringify(datata as any));
     if (
       !data.flashcards[data.flashcards.findIndex((e) => e.id === currentID) + 1]
     ) {
@@ -66,11 +70,15 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
   }
 
   function handleWrong() {
-    const dataaa = { ...data, wrong: data.wrong + 1 };
+    const dataaa = [...data.wrong, currentID];
     if (!dataaa) {
       return;
     }
-    localStorage.setItem("hello", JSON.stringify(dataaa as any));
+    const datata = {
+      ...data,
+      wrong: dataaa
+    } 
+    localStorage.setItem("hello", JSON.stringify(datata as any));
     if (
       !data.flashcards[data.flashcards.findIndex((e) => e.id === currentID) + 1]
     ) {

@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 
 type Dataa = {
   sessionID: string;
-  correct: number;
-  wrong: number;
+  correct: string[];
+  wrong: string[];
   flashcards: { answer: string; question: string; id: string }[];
   id: string;
 };
@@ -42,8 +42,8 @@ const SummaryPage = () => {
       <h1 className="font-bold text-3xl">Summary</h1>
       {data ? (
         <div>
-          <p>correct: {data.correct}</p>
-          <p>wrong: {data.wrong}</p>
+          <p>correct: {data.correct.length}</p>
+          <p>wrong: {data.wrong.length}</p>
         </div>
       ) : (
         <div>null</div>

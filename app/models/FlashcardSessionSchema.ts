@@ -6,8 +6,8 @@ export default models.FlashcardSessionSchema ||
     new Schema(
       {
         sessionID: String,
-        correct: Number,
-        wrong: Number,
+        correct: [],
+        wrong: [],
         flashcards: [],
         id: String,
       },

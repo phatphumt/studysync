@@ -15,8 +15,8 @@ const CallToDB = ({ id, data }: { id: string; data: Data }) => {
   async function click() {
     const thedata = {
       sessionID,
-      correct: 0,
-      wrong: 0,
+      correct: [],
+      wrong: [],
       flashcards: data.flashcards,
       id,
     };

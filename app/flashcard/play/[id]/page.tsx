@@ -12,7 +12,8 @@ import FlashcardSchema from "@/app/models/FlashcardSchema";
 
 const PlayFlashcard = async ({ params }: { params: { id: string } }) => {
   const initialCatData = await fetch(
-    "https://api.thecatapi.com/v1/images/search"
+    "https://api.thecatapi.com/v1/images/search",
+    { cache: "no-store" }
   );
   const catImg: { id: string; url: string; width: number; height: number }[] =
     await initialCatData.json();
