@@ -10,14 +10,14 @@ import {
 const Navbar = () => {
   const { user, isAuthenticated } = useKindeBrowserClient();
   return (
-    <div className="navbar bg-base-200">
+    <nav className="navbar bg-base-200 flex-col sm:flex-row">
       <div className="flex-1">
         <span className="btn btn-ghost normal-case text-2xl">
           <Link href="/">StudySync</Link>
         </span>
       </div>
       <div className="flex-none">
-        <ul className="menu menu-horizontal px-1 text-lg">
+        <ul className="menu menu-verical px-1 text-lg sm:menu-horizontal">
           <li>
             <Link href="/dashboard">Dashboard</Link>
           </li>
@@ -39,7 +39,7 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-    </div>
+    </nav>
   );
 };
 

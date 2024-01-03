@@ -20,14 +20,31 @@ type Flaschard = {
 
 const HistoryPage = async ({ params }: { params: { id: string } }) => {
   await connect(process.env.MONGO_URI as string);
-  const data: Data[] = await FlashcardSessionSchema.find({ id: params.id });
-  const dataata: Flaschard = await FlashcardSchema.findById(params.id) as Flaschard
-  console.log(dataata.flashcards)
+  const data: Data[] = await FlashcardSessionSchema.find({
+    id: params.id,
+  }).sort({ createdAt: "desc" });
+  const dataata: Flaschard = (await FlashcardSchema.findById(
+    params.id
+  )) as Flaschard;
+  console.log(dataata.flashcards);
   return (
     <div className="p-8">
       {data.length !== 0 ? (
         <div>
-          {data.map(i => <HistoryClient data={i} flashcard={dataata} key={uid()}/>)}
+          {data.map((i) => (
+            <div className="mb-2" key={uid(2)}>
+              <HistoryClient data={i} flashcard={dataata} />
+            </div>
+          ))}
+          <p>
+            create more history{" "}
+            <Link
+              className="underline font-medium"
+              href={`/flashcard/play/${params.id}`}
+            >
+              here
+            </Link>
+          </p>
         </div>
       ) : (
         <p>

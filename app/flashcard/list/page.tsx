@@ -3,6 +3,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
 import { connect } from "mongoose";
+import { redirect } from "next/navigation";
 
 type Data = {
   _id: string;
@@ -27,7 +28,11 @@ const ListFlashcard = async () => {
   }
  */
   const user = await getUser();
-  await connect(process.env.MONGO_URI as string);
+  try {
+    await connect(process.env.MONGO_URI as string);
+  } catch (e) {
+    redirect("/flashcard/list");
+  }
   const data: Data[] = await Flashcard.find({ owner: user?.id }).sort({
     createdAt: "desc",
   });

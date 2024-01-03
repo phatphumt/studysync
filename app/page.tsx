@@ -25,11 +25,11 @@ const Home = () => {
 
   return (
     <>
-      <main className="h-[90vh] flex justify-center items-center flex-col">
-        <h1 className="text-5xl font-bold text-center mb-10">
+      <main className="h-[90vh] flex flex-col items-center justify-center">
+        <h1 className="text-4xl font-bold text-center mt-10 mb-10">
           StudySync คืออะไร
         </h1>
-        <div className="flex justify-evenly w-screen bg-gray-200 h-2/4">
+        <div className="flex flex-col justify-center items-center w-screen bg-gray-200 pb-4 sm:flex-row sm:justify-evenly">
           {items.map((i, ii) => (
             <AboutContent
               icon={i.icon}
@@ -40,7 +40,7 @@ const Home = () => {
           ))}
         </div>
         <Link href="/dashboard">
-          <Button className="mt-10 text-lg btn-lg">
+          <Button className="mt-10 text-lg btn-lg text-center">
             รออะไรอยู่ล่ะ เริ่มเลย
           </Button>
         </Link>
