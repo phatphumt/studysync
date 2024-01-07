@@ -6,3 +6,7 @@
 	font-size: 8rem;
 	user-select: none;
 }
+
+.material-icons-outlined.small {
+	font-size: 1rem;
+}

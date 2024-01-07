@@ -25,7 +25,7 @@ const Home = () => {
 
   return (
     <>
-      <main className="h-[90vh] flex flex-col items-center justify-center">
+      <main className="sm:h-[90vh] flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold text-center mt-10 mb-10">
           StudySync คืออะไร
         </h1>
@@ -40,7 +40,7 @@ const Home = () => {
           ))}
         </div>
         <Link href="/dashboard">
-          <Button className="mt-10 text-lg btn-lg text-center">
+          <Button className="my-10 text-lg btn-lg text-center">
             รออะไรอยู่ล่ะ เริ่มเลย
           </Button>
         </Link>

@@ -1,18 +1,21 @@
 import React from "react";
 /* import { doc, getDoc } from "firebase/firestore";
 import FlashcardEditor from "./FlashcardEditor"; */
-import { redirect } from "next/navigation";
+import { getFlashcard } from "@/app/config/flashcardActions";
+import FlashcardEditor from "./FlashcardEditor";
 
-/* type Data = {
-  owner: string;
-  createdAt: { seconds: number; nanoseconds: number };
-  flashcards: [{ answer: string; question: string; id: string }];
-  name: string;
-}; */
-
-const EditPage = () => {
-  redirect("/flashcard/list");
-  return <></>;
+const EditPage = async ({ params }: { params: { id: string } }) => {
+  const data = await getFlashcard(params.id);
+  return (
+    <>
+      <FlashcardEditor
+        flashcards={data.flashcards}
+        name={data.name}
+        owner={data.owner}
+        _id={params.id}
+      />
+    </>
+  );
 };
 
 export default EditPage;

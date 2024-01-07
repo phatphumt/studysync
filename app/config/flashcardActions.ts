@@ -13,6 +13,14 @@ type Flashcards = {
   answer: string;
 };
 
+export type IDedFlashcard = Flashcards & {id: string}
+
+export type TheFlashcard = {
+  name: string;
+  owner: string;
+  flashcards: IDedFlashcard[];
+};
+
 type FlashcardSession = {
   sessionID: string;
   correct: string[];
@@ -117,6 +125,33 @@ export async function deleteItem(id: string){
   try {
     await FlashcardSchema.findByIdAndDelete(id)
     console.log("done");
+  } catch (e) {
+    throw new Error(`${e}`)
+  }
+}
+
+export async function getFlashcard(id: string): Promise<TheFlashcard> {
+  try {
+    await connect(process.env.MONGO_URI as string);
+  } catch (e) {
+    throw new Error(`${e}`)
+  }
+  try {
+    const data = await FlashcardSchema.findById(id)
+    return data
+  } catch (e) {
+    throw new Error(`${e}`)
+  }
+}
+
+export async function updateFlashcard(prev: TheFlashcard, neww: IDedFlashcard[], id: string) {
+  try {
+    await connect(process.env.MONGO_URI as string);
+  } catch (e) {
+    throw new Error(`${e}`)
+  }
+  try {
+    await FlashcardSchema.findByIdAndUpdate(id, {...prev, flashcards: neww})
   } catch (e) {
     throw new Error(`${e}`)
   }

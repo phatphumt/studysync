@@ -44,7 +44,7 @@ const ListFlashcard = async () => {
           <div key={i._id}>
             <span className="font-bold text-2xl">Flashcard ({i.name})</span>
             {"       "}
-            <DeleteButton id={i._id} />
+            <DeleteButton id={`${i._id}`} />
             {"  "}
             <p>
               Created At: {new Date(i.createdAt).toLocaleDateString()}{" "}
