@@ -36,7 +36,7 @@ export default async function Dashboard() {
             <Link href="/timer">Timer</Link>
           </li>
           <li>
-            <Link href="/timer">Quiz</Link>
+            <Link href="/quiz">Quiz</Link>
           </li>
           <li>
             <LogoutLink>Logout</LogoutLink>
