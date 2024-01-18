@@ -16,14 +16,16 @@ const FlashcardAIGen = () => {
   const [topic, setTopic] = useState<string>("");
   const [pending, setPending] = useState(false);
   return (
-    <div className={pending ? "p-5" : ""}>
+    <div className="p-5">
       <form
         action={async (e) => {
           setPending(true);
-          const a = await generateFlashcard(e);
-          const data = JSON.parse(a);
-          setD(data as Flashcards[]);
-          setPending(false);
+          setTimeout(async () => {
+            const a = await generateFlashcard(e);
+            const data = JSON.parse(a);
+            setD(data as Flashcards[]);
+            setPending(false);
+          }, 100);
         }}
       >
         <input
@@ -42,7 +44,7 @@ const FlashcardAIGen = () => {
         />
         <br />
         <br />
-        <button type="submit" className="btn" disabled={!!pending}>
+        <button type="submit" className="btn" disabled={pending}>
           get the fucking data
         </button>
         <br />

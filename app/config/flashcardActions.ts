@@ -41,7 +41,7 @@ export async function generateFlashcard(formData: FormData) {
       messages: [
         {
           role: "system",
-          content: `you are a flashcard generator. you will get the amount of flashcard that you will generate and the topic amount that question. return to user with the following json document format without deviation. \n
+          content: `you are a flashcard generator. you will get the amount of flashcard that you will generate and the topic of that question. return to user with the following json document format without deviation. \n
             [
               {
                 "question": "The question",

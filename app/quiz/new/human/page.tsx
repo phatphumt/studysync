@@ -1,8 +1,8 @@
-"use client";
+/* "use client";
 import { addToDB } from "@/app/config/flashcardActions";
 import { Quiz, Quizes } from "@/app/config/quizActions";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import React, { FormEvent, FormEventHandler, useRef, useState } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import { uid } from "uid";
 const HumanQuiz = () => {
   const questionRef = useRef<HTMLInputElement>(null);
@@ -127,6 +127,13 @@ const HumanQuiz = () => {
           <br />
           <br />
           <button className="btn mb-5 btn-sm">add quiz</button>
+          <button
+            className="btn mx-2 btn-sm"
+            type="button"
+            onClick={() => console.log(quiz)}
+          >
+            see data
+          </button>
           <button className="btn mx-2 btn-sm" type="button">
             clear
           </button>
@@ -159,6 +166,14 @@ const HumanQuiz = () => {
       </div>
     </>
   );
+};
+
+export default HumanQuiz;
+ */
+import React from "react";
+
+const HumanQuiz = () => {
+  return <div>HumanQuiz</div>;
 };
 
 export default HumanQuiz;

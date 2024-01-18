@@ -13,6 +13,7 @@
     "@types/node": "20.8.2",
     "@types/react": "18.2.24",
     "@types/react-dom": "18.2.8",
+    "array-shuffle": "^3.0.0",
     "autoprefixer": "10.4.16",
     "date-fns": "^3.0.6",
     "eslint": "8.50.0",
@@ -29,6 +30,7 @@
     "uid": "^2.0.2"
   },
   "devDependencies": {
+    "@types/shuffle-array": "^1.0.5",
     "daisyui": "^3.8.3",
     "encoding": "^0.1.13"
   },
