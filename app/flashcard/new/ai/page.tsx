@@ -1,6 +1,6 @@
 "use client";
 
-import { addToDB, generateFlashcard } from "@/app/config/flashcardActions";
+import { addToDB, generateFlashcard } from "@/app/actions/flashcardActions";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useState } from "react";
 import { uid } from "uid";

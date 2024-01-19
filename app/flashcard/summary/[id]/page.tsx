@@ -1,5 +1,5 @@
 "use client";
-import { addSessionToDB } from "@/app/config/flashcardActions";
+import { addSessionToDB } from "@/app/actions/flashcardActions";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 

@@ -1,6 +1,6 @@
-import { getQuizByID } from "@/app/config/quizActions";
+import { getQuizByID } from "@/app/actions/quizActions";
 import Image from "next/image";
-import ClientPlay from "./ClientPlay";
+import PlayQuiz from "./PlayQuiz";
 
 const PlayFlashcard = async ({ params }: { params: { id: string } }) => {
   const initialCatData = await fetch(
@@ -27,7 +27,7 @@ const PlayFlashcard = async ({ params }: { params: { id: string } }) => {
         />
       ))}
       <div className="pb-3" />
-      <ClientPlay
+      <PlayQuiz
         _id={_id}
         createdAt={createdAt}
         updatedAt={updatedAt}

@@ -3,7 +3,7 @@ import {
   IDedFlashcard,
   TheFlashcard,
   updateFlashcard,
-} from "@/app/config/flashcardActions";
+} from "@/app/actions/flashcardActions";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 

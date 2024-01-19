@@ -24,6 +24,14 @@ export type Quizes = {
   choices: Choice[];
 };
 
+export type QuizSession = {
+  sessionID: string,
+  correct: string[],
+  wrong: string[],
+  quizes: Quizes[],
+  id: string,
+};
+
 export async function generateQuiz(formData: FormData) {
   console.log("adding");
   const choices = formData.get("choices");
