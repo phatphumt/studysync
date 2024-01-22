@@ -51,8 +51,8 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
     }
     const datata = {
       ...data,
-      correct: dataaa
-    }
+      correct: dataaa,
+    };
     localStorage.setItem("hello", JSON.stringify(datata as any));
     if (
       !data.flashcards[data.flashcards.findIndex((e) => e.id === currentID) + 1]
@@ -76,13 +76,13 @@ const FlashcardPlayer = ({ currentID }: { currentID: string }) => {
     }
     const datata = {
       ...data,
-      wrong: dataaa
-    } 
+      wrong: dataaa,
+    };
     localStorage.setItem("hello", JSON.stringify(datata as any));
     if (
       !data.flashcards[data.flashcards.findIndex((e) => e.id === currentID) + 1]
     ) {
-      push(`/flashcard/summary/${data.id}`);
+      push(`/flashcard/summary`);
       return;
     }
     push(

@@ -25,11 +25,11 @@ export type Quizes = {
 };
 
 export type QuizSession = {
-  sessionID: string,
-  correct: string[],
-  wrong: string[],
-  quizes: Quizes[],
-  id: string,
+  sessionID: string;
+  correct: string[];
+  wrong: string[];
+  quizes: Quizes[];
+  id: string;
 };
 
 export async function generateQuiz(formData: FormData) {
@@ -49,10 +49,10 @@ export async function generateQuiz(formData: FormData) {
               "question": "The question (item #1)",
               "choices": 
               [
-                {choice: 'choice 1', correct: (true or false), id: (uid e.g. 0e1a)}, 
-                {choice: 'choice 2', correct: (true or false), id: (uid e.g. 9b5a)},
-                {choice: 'choice 3', correct: (true or false), id: (uid e.g. 0e1a)},
-                {choice: 'choice 4', correct: (true or false), id: (uid e.g. 0e1a)}
+                {choice: 'choice 1', correct: (true or false)}, 
+                {choice: 'choice 2', correct: (true or false)},
+                {choice: 'choice 3', correct: (true or false)},
+                {choice: 'choice 4', correct: (true or false)}
               ]
             },
             ...rest of the questions

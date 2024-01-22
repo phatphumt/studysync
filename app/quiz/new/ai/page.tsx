@@ -1,8 +1,9 @@
 "use client";
 
-import { Quizes, generateQuiz, addToDB } from "@/app/actions/quizActions";
+import { Quizes, generateQuiz, addToDB, Quiz } from "@/app/actions/quizActions";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useRouter } from "next/navigation";
+import { emit } from "process";
 import { useState } from "react";
 import { uid } from "uid";
 
@@ -18,12 +19,16 @@ const FlashcardAIGen = () => {
         action={async (e) => {
           setD([]);
           setPending(true);
-          console.log("asdasdasd");
           setTimeout(async () => {
             const stringg = await generateQuiz(e);
             const a = JSON.parse(stringg) as Quizes[];
-            console.log(a);
-            setD(a);
+            const b = a.map((e) => ({
+              ...e,
+              id: uid(6),
+              choices: e.choices.map((ele) => ({ ...ele, id: uid(6) })),
+            }));
+            console.log(b);
+            setD(b);
             setPending(false);
           }, 100);
         }}

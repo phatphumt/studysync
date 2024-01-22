@@ -1,6 +1,7 @@
 "use client";
 import { addSessionToDB } from "@/app/actions/flashcardActions";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 type Dataa = {
@@ -13,12 +14,14 @@ type Dataa = {
 
 const SummaryPage = () => {
   const [data, setData] = useState<Dataa | null>(null);
+  const { push } = useRouter();
   useEffect(() => {
     const savedData = localStorage.getItem("hello");
 
     if (!savedData) {
       // No data found in localStorage
       setData(null);
+      push("/");
       return;
     }
 
