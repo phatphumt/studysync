@@ -1,9 +1,8 @@
 "use client";
 
-import { Quizes, generateQuiz, addToDB, Quiz } from "@/app/actions/quizActions";
+import { Quizes, generateQuiz, addToDB } from "@/app/actions/quizActions";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useRouter } from "next/navigation";
-import { emit } from "process";
 import { useState } from "react";
 import { uid } from "uid";
 

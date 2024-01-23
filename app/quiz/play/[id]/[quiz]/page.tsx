@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { uid } from "uid";
+import shuffleArray from "array-shuffle";
 
 export default function QuizPlayer({ params }: { params: { quiz: string } }) {
   const [data, setData] = useState<QuizSession>({
@@ -33,14 +34,20 @@ export default function QuizPlayer({ params }: { params: { quiz: string } }) {
       console.error("no such quiz in a localstorage");
       throw new Error("no such quiz in a localstorage");
     }
-    setQuiz(data);
+    const shuffledChoice: Quizes = {
+      ...data,
+      choices: shuffleArray(data.choices),
+    };
+    setQuiz(shuffledChoice);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const isLast = () => data.quizes.indexOf(quiz) !== data.quizes.length - 1;
+  const isNotLast = () =>
+    data.quizes.findIndex((e) => e.id === params.quiz) !==
+    data.quizes.length - 1;
   function clickcc(item: Choice) {
     setAnswered(true);
     setAnsweredQuiz(item.id);
-    console.log(isLast());
+    console.log(isNotLast());
     console.log(item);
     if (item.correct) {
       const sgb = { ...data, correct: [...data.correct, params.quiz] };
@@ -80,7 +87,7 @@ export default function QuizPlayer({ params }: { params: { quiz: string } }) {
           ))}
       </div>
       {answered ? (
-        isLast() ? (
+        isNotLast() ? (
           <Link
             href={`/quiz/play/${data.id}/${
               data.quizes[
@@ -91,7 +98,7 @@ export default function QuizPlayer({ params }: { params: { quiz: string } }) {
             Next
           </Link>
         ) : (
-          <Link href={`/quiz/play/${data.id}`}>Done</Link>
+          <Link href={`/quiz/summary`}>Done</Link>
         )
       ) : null}
     </div>

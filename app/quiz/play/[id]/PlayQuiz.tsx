@@ -3,7 +3,6 @@
 import { DBQuiz } from "@/app/actions/quizActions";
 import React from "react";
 import { uid } from "uid";
-import shuffleArray from "array-shuffle";
 import Link from "next/link";
 
 export default function PlayQuiz(props: DBQuiz) {
@@ -14,7 +13,7 @@ export default function PlayQuiz(props: DBQuiz) {
       sessionID,
       correct: [],
       wrong: [],
-      quizes: shuffleArray(props.quizes),
+      quizes: props.quizes,
       id: props._id,
     };
     localStorage.setItem("currentQuiz", JSON.stringify(thedata));

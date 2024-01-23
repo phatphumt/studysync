@@ -1,25 +1,38 @@
 "use client";
-import { QuizSession } from "@/app/actions/quizActions";
+import { QuizSession, addSessionToDB } from "@/app/actions/quizActions";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function SummaryPage() {
-  const [data, setData] = useState<QuizSession>();
+  const [data, setData] = useState<QuizSession | null>(null);
+  const { push } = useRouter();
   useEffect(() => {
-    const savedData = localStorage.getItem("hello");
+    const savedData = localStorage.getItem("currentQuiz");
 
     if (!savedData) {
       // No data found in localStorage
-      /* setData(null); */
+      setData(null);
+      push("/quiz/list");
       return;
     }
 
     const parsedData = JSON.parse(savedData);
     setData(parsedData);
-    localStorage.removeItem("hello");
+    localStorage.removeItem("currentQuiz");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="flex h-[91vh] items-center justify-center flex-col">
-      {data?.correct.length} / {data?.wrong.length}
+      correct: {data?.correct.length} / wrong: {data?.wrong.length}
+      <Link
+        href={`/quiz/list`}
+        onClick={async () => {
+          addSessionToDB(data);
+        }}
+      >
+        Done
+      </Link>
     </div>
   );
 }

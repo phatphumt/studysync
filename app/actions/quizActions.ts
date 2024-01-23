@@ -3,6 +3,7 @@ import { connect } from "mongoose";
 import OpenAI from "openai";
 import QuizSchema from "../models/QuizSchema";
 import { uid } from "uid";
+import QuizSessionSchema from "../models/QuizSessionSchema";
 
 export type Quiz = {
   name: string;
@@ -57,6 +58,7 @@ export async function generateQuiz(formData: FormData) {
             },
             ...rest of the questions
           ]
+          make sure that only 1 correct answer should be a question
           `,
         },
         {
@@ -116,6 +118,23 @@ export async function getQuizByID(id: string): Promise<DBQuiz> {
     const dataa = QuizSchema.findById(id);
     if (dataa === null) throw new Error("not found stuff");
     return dataa;
+  } catch (e) {
+    throw new Error(`${e}`);
+  }
+}
+
+export async function addSessionToDB(data: QuizSession | null) {
+  try {
+    await connect(process.env.MONGO_URI as string);
+  } catch (e) {
+    throw new Error(`${e}`);
+  }
+  try {
+    if (!data) {
+      throw new Error(`data is null`);
+    }
+    const dataa = new QuizSessionSchema(data);
+    await dataa.save();
   } catch (e) {
     throw new Error(`${e}`);
   }

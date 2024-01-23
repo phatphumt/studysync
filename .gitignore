@@ -66,3 +66,6 @@ node_modules/
 # dotenv environment variables file
 .env
 .env.local
+
+./package-lock.json
+bun.lockb
