@@ -28,7 +28,7 @@ export default function SummaryPage() {
       <Link
         href={`/quiz/list`}
         onClick={async () => {
-          addSessionToDB(data);
+          await addSessionToDB(data);
         }}
       >
         Done

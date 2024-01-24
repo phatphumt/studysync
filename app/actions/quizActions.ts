@@ -27,10 +27,21 @@ export type Quizes = {
 
 export type QuizSession = {
   sessionID: string;
-  correct: string[];
-  wrong: string[];
+  correct: CorrectWrong[];
+  wrong: CorrectWrong[];
   quizes: Quizes[];
   id: string;
+};
+
+export type CorrectWrong = {
+  quizID: string;
+  answeredID: string;
+};
+
+export type DBQuizSession = QuizSession & {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export async function generateQuiz(formData: FormData) {
@@ -135,6 +146,25 @@ export async function addSessionToDB(data: QuizSession | null) {
     }
     const dataa = new QuizSessionSchema(data);
     await dataa.save();
+  } catch (e) {
+    throw new Error(`${e}`);
+  }
+}
+
+export async function getSession(id: string): Promise<DBQuizSession[]> {
+  try {
+    await connect(process.env.MONGO_URI as string);
+  } catch (e) {
+    throw new Error(`${e}`);
+  }
+
+  try {
+    const data: DBQuizSession[] = await QuizSessionSchema.find({ id: id }).sort(
+      {
+        createdAt: "desc",
+      }
+    );
+    return data;
   } catch (e) {
     throw new Error(`${e}`);
   }

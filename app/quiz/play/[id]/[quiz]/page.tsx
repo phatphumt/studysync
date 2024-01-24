@@ -1,6 +1,11 @@
 "use client";
 
-import { Choice, QuizSession, Quizes } from "@/app/actions/quizActions";
+import {
+  Choice,
+  CorrectWrong,
+  QuizSession,
+  Quizes,
+} from "@/app/actions/quizActions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -50,12 +55,14 @@ export default function QuizPlayer({ params }: { params: { quiz: string } }) {
     console.log(isNotLast());
     console.log(item);
     if (item.correct) {
-      const sgb = { ...data, correct: [...data.correct, params.quiz] };
+      const asd: CorrectWrong = { answeredID: item.id, quizID: params.quiz };
+      const sgb = { ...data, correct: [...data.correct, asd] };
       console.log(sgb);
       localStorage.setItem("currentQuiz", JSON.stringify(sgb));
     }
     if (!item.correct) {
-      const sgb = { ...data, wrong: [...data.wrong, params.quiz] };
+      const asd: CorrectWrong = { answeredID: item.id, quizID: params.quiz };
+      const sgb = { ...data, wrong: [...data.wrong, asd] };
       console.log(sgb);
       localStorage.setItem("currentQuiz", JSON.stringify(sgb));
     }

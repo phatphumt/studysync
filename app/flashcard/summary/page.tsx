@@ -38,6 +38,7 @@ const SummaryPage = () => {
 
     fetchData(parsedData);
     localStorage.removeItem("hello");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
