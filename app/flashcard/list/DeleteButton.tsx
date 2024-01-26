@@ -1,5 +1,5 @@
 "use client";
-import { deleteItem } from "@/app/actions/flashcardActions";
+import { deleteItem } from "@/app/libs/flashcardActions";
 import { useRouter } from "next/navigation";
 import React from "react";
 

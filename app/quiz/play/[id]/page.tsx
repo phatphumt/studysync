@@ -1,4 +1,4 @@
-import { getQuizByID } from "@/app/actions/quizActions";
+import { getQuizByID } from "@/app/libs/quizActions";
 import Image from "next/image";
 import PlayQuiz from "./PlayQuiz";
 

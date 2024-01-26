@@ -1,7 +1,7 @@
 import React from "react";
 /* import { doc, getDoc } from "firebase/firestore";
 import FlashcardEditor from "./FlashcardEditor"; */
-import { getFlashcard } from "@/app/actions/flashcardActions";
+import { getFlashcard } from "@/app/libs/flashcardActions";
 import FlashcardEditor from "./FlashcardEditor";
 
 const EditPage = async ({ params }: { params: { id: string } }) => {

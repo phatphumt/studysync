@@ -1,5 +1,5 @@
 "use client";
-import { QuizSession } from "@/app/actions/quizActions";
+import { QuizSession } from "@/app/libs/quizActions";
 import Collapse from "@/app/components/util/Collapse";
 import React from "react";
 
@@ -26,12 +26,13 @@ export default function HistoryCollapse({
           created at: {new Date(createdAt).toLocaleDateString()}{" "}
           {new Date(createdAt).toLocaleTimeString()} (UTC)
         </p>
-        <h1 className="font-bold">Correct: </h1>
+        <h1 className="font-bold text-xl">Correct: </h1>
         {correct.length === 0 && <p>no correct answers</p>}
         {correct.map((i) => {
           const theData = quizes.find((e) => e.id === i.quizID);
           return (
             <div key={i.quizID} className="space-x-3">
+              <h2 className="font-semibold text-lg">{theData?.question}</h2>
               {theData?.choices.map((e) => {
                 return (
                   <span
@@ -46,12 +47,13 @@ export default function HistoryCollapse({
             </div>
           );
         })}
-        <h1 className="font-bold">Wrong: </h1>
+        <h1 className="font-bold text-xl">Wrong: </h1>
         {wrong.length === 0 && <p>no wrong answers</p>}
         {wrong.map((i) => {
           const theData = quizes.find((e) => e.id === i.quizID);
           return (
             <div key={i.quizID} className="space-x-3">
+              <h2 className="font-semibold text-lg">{theData?.question}</h2>
               {theData?.choices.map((e) => (
                 <span
                   key={e.id}

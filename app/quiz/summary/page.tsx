@@ -1,5 +1,5 @@
 "use client";
-import { QuizSession, addSessionToDB } from "@/app/actions/quizActions";
+import { QuizSession, addSessionToDB } from "@/app/libs/quizActions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";

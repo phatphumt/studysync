@@ -1,6 +1,6 @@
 "use client";
 
-import { DBQuiz } from "@/app/actions/quizActions";
+import { DBQuiz } from "@/app/libs/quizActions";
 import React from "react";
 import { uid } from "uid";
 import Link from "next/link";

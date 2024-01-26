@@ -1,5 +1,5 @@
 "use client";
-import { addToDB } from "@/app/actions/flashcardActions";
+import { addToDB } from "@/app/libs/flashcardActions";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import React, { useState } from "react";
 type Flashcard = {

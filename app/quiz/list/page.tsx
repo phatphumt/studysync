@@ -1,4 +1,4 @@
-import { getQuiz } from "@/app/actions/quizActions";
+import { getQuiz } from "@/app/libs/quizActions";
 import React from "react";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";

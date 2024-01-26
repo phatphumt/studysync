@@ -1,4 +1,4 @@
-import { getSession } from "@/app/actions/quizActions";
+import { getSession } from "@/app/libs/quizActions";
 import Link from "next/link";
 import React from "react";
 import HistoryCollapse from "./HistoryCollapse";
