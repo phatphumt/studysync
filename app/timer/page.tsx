@@ -1,20 +1,7 @@
-"use client";
-
-import useTimer from "../libs/useTimer";
-
-export default function TimerPage() {
-  const { isActive, start, getFormattedString, isDone } = useTimer(2);
+import React from 'react'
+import Timer from './Timer'
+export default async function page() {
   return (
-    <div className="p-8">
-      <h1 className="font-semibold text-xl">{getFormattedString()}</h1>
-      <p>{isDone ? "doneed" : "not onde"}</p>
-      <button
-        className="btn btn-sm"
-        onClick={() => start()}
-        disabled={isActive}
-      >
-        start
-      </button>
-    </div>
-  );
+    <Timer allowed={true}/>
+  )
 }

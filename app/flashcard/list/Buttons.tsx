@@ -3,7 +3,8 @@ import { deleteItem } from "@/app/libs/flashcardActions";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const DeleteButton = ({ id }: { id: string }) => {
+const Buttons = ({ id, modalEvent }: { id: string, modalEvent: () => void }) => {
+  
   const { refresh, push } = useRouter();
   return (
     <>
@@ -24,8 +25,17 @@ const DeleteButton = ({ id }: { id: string }) => {
       >
         <span className="material-icons-outlined">edit</span>
       </button>
+      <button
+        className="text-blue-600 font-bold cursor-pointer select-none"
+        onClick={() => {
+          modalEvent()
+        }}
+      >
+        <span className="material-icons-outlined">ios_share</span>
+      </button>
+        
     </>
   );
 };
 
-export default DeleteButton;
+export default Buttons;

@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 export default function useTimer(minutes: number) {
   const [time, setTime] = useState(minutes * 60);
   const [isActive, setIsActive] = useState(false);
-  const [isDone, setIsDone] = useState(false);
   const reset = () => {
     setIsActive(false);
     setTime(minutes * 60);
@@ -23,7 +22,10 @@ export default function useTimer(minutes: number) {
   useEffect(() => {
     let interval = undefined;
 
-    if (time < 1) setIsDone(true);
+    if (time < 1) {
+      setIsActive(false);
+      setTime(minutes * 60);
+    }
 
     if (time > 0 && isActive) {
       interval = setInterval(() => {
@@ -33,12 +35,11 @@ export default function useTimer(minutes: number) {
     return () => {
       clearInterval(interval);
     };
-  }, [time, isActive]);
+  }, [time, isActive, minutes]);
 
   return {
     time,
     isActive,
-    isDone,
     start,
     reset,
     getFormattedString,

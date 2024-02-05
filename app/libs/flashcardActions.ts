@@ -13,7 +13,7 @@ type Flashcards = {
   answer: string;
 };
 
-export type IDedFlashcard = Flashcards & {id: string}
+export type IDedFlashcard = Flashcards & { id: string };
 
 export type TheFlashcard = {
   name: string;
@@ -103,30 +103,30 @@ export async function addSessionToDB(data: FlashcardSession) {
   try {
     await connect(process.env.MONGO_URI as string);
   } catch (e) {
-    throw new Error(`${e}`)
+    throw new Error(`${e}`);
   }
   try {
     const asd = new FlashcardSessionSchema(data);
     await asd.save();
     console.log("done");
   } catch (e) {
-    throw new Error(`${e}`)
+    throw new Error(`${e}`);
   }
   await disconnect();
 }
 
-export async function deleteItem(id: string){
-  "use server"
+export async function deleteItem(id: string) {
+  "use server";
   try {
     await connect(process.env.MONGO_URI as string);
   } catch (e) {
-    throw new Error(`${e}`)
+    throw new Error(`${e}`);
   }
   try {
-    await FlashcardSchema.findByIdAndDelete(id)
+    await FlashcardSchema.findByIdAndDelete(id);
     console.log("done");
   } catch (e) {
-    throw new Error(`${e}`)
+    throw new Error(`${e}`);
   }
 }
 
@@ -134,25 +134,29 @@ export async function getFlashcard(id: string): Promise<TheFlashcard> {
   try {
     await connect(process.env.MONGO_URI as string);
   } catch (e) {
-    throw new Error(`${e}`)
+    throw new Error(`${e}`);
   }
   try {
-    const data = await FlashcardSchema.findById(id)
-    return data
+    const data = await FlashcardSchema.findById(id);
+    return data;
   } catch (e) {
-    throw new Error(`${e}`)
+    throw new Error(`${e}`);
   }
 }
 
-export async function updateFlashcard(prev: TheFlashcard, neww: IDedFlashcard[], id: string) {
+export async function updateFlashcard(
+  prev: TheFlashcard,
+  neww: IDedFlashcard[],
+  id: string
+) {
   try {
     await connect(process.env.MONGO_URI as string);
   } catch (e) {
-    throw new Error(`${e}`)
+    throw new Error(`${e}`);
   }
   try {
-    await FlashcardSchema.findByIdAndUpdate(id, {...prev, flashcards: neww})
+    await FlashcardSchema.findByIdAndUpdate(id, { ...prev, flashcards: neww });
   } catch (e) {
-    throw new Error(`${e}`)
+    throw new Error(`${e}`);
   }
 }
