@@ -1,15 +1,27 @@
 import { useState, useEffect } from "react";
 import useIsMount from "./useIsMount";
 
-export default function useTimer(minutes: number) {
-  const [time, setTime] = useState(minutes * 60);
+export default function usePomodoroTimer(
+  workMinutes: number,
+  breakMinutes: number,
+  cyclesBeforePrompt: number
+) {
+  const [time, setTime] = useState(workMinutes * 60);
   const [isActive, setIsActive] = useState(false);
-  const [count, setCount] = useState(0)
+  const [isBreak, setIsBreak] = useState(false);
+  const [workCount, setWorkCount] = useState(0);
+  const [breakCount, setBreakCount] = useState(0);
+  const [cycleCount, setCycleCount] = useState(0);
+  const [showContinuePrompt, setShowContinuePrompt] = useState(false);
+  const isMount = useIsMount();
+
   const reset = () => {
     setIsActive(false);
-    setTime(minutes * 60);
+    setIsBreak(false);
+    setTime(workMinutes * 60);
   };
-  const isMount = useIsMount()
+
+  const start = () => setIsActive(true);
 
   const getFormattedString = () => {
     const minutes = Math.floor(time / 60);
@@ -20,42 +32,76 @@ export default function useTimer(minutes: number) {
       .padStart(2, "0")}`;
   };
 
-  const getCount = () => count;
-
-  const start = () => setIsActive(true);
-
   useEffect(() => {
-    let interval: any = undefined;
+    let interval: any;
 
-    if (time < 1) {
+    if (time <= 0) {
       setIsActive(false);
+      if (!isBreak) {
+        setIsBreak(true);
+        setTime(breakMinutes * 60);
+        setWorkCount((prevCount) => prevCount + 1);
+      } else {
+        setIsBreak(false);
+        setTime(workMinutes * 60);
+        setBreakCount((prevCount) => prevCount + 1);
+        setCycleCount((prevCount) => prevCount + 1);
+        if (cycleCount >= cyclesBeforePrompt) {
+          setShowContinuePrompt(true);
+        }
+      }
     }
 
-    if (time > 0 && isActive) {
+    if (isActive) {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
     }
-    return () => {
-      clearInterval(interval);
-    };
-  }, [time, isActive, minutes]);
-  
+
+    return () => clearInterval(interval);
+  }, [
+    time,
+    isActive,
+    isBreak,
+    workMinutes,
+    breakMinutes,
+    cyclesBeforePrompt,
+    cycleCount,
+  ]);
+
   useEffect(() => {
     if (!isActive && !isMount) {
-      setCount(prev => {
-        return prev + 1
-      })
-      setTime(2)
+      if (isBreak) {
+        setBreakCount((prevCount) => prevCount + 1);
+      } else {
+        setWorkCount((prevCount) => prevCount + 1);
+      }
     }
-  }, [isActive])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActive, isBreak]);
+
+  const handleContinue = () => {
+    setShowContinuePrompt(false);
+    setCycleCount(0);
+    start();
+  };
+
+  const handleCancel = () => {
+    setShowContinuePrompt(false);
+    reset();
+  };
 
   return {
     time,
     isActive,
+    isBreak,
     start,
     reset,
     getFormattedString,
-    getCount
+    workCount,
+    breakCount,
+    showContinuePrompt,
+    handleContinue,
+    handleCancel,
   };
 }
