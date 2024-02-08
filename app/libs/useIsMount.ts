@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react";
 
 export default function useIsMount() {
   const isMountRef = useRef(true);
@@ -6,4 +6,4 @@ export default function useIsMount() {
     isMountRef.current = false;
   }, []);
   return isMountRef.current;
-};
+}
