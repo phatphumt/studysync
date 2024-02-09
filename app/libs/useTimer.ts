@@ -11,8 +11,8 @@ export default function usePomodoroTimer(
   const [isBreak, setIsBreak] = useState(false);
   const [workCount, setWorkCount] = useState(0);
   const [breakCount, setBreakCount] = useState(0);
-  const [cycleCount, setCycleCount] = useState(0);
-  const [showContinuePrompt, setShowContinuePrompt] = useState(false);
+  const [count, setCount] = useState(0);
+  const [done, setDone] = useState(false);
   const isMount = useIsMount();
 
   const reset = () => {
@@ -21,7 +21,10 @@ export default function usePomodoroTimer(
     setTime(workMinutes * 60);
   };
 
-  const start = () => setIsActive(true);
+  const start = () => {
+    setIsActive(true);
+    setDone(false);
+  };
 
   const getFormattedString = () => {
     const minutes = Math.floor(time / 60);
@@ -36,7 +39,13 @@ export default function usePomodoroTimer(
     let interval: any;
 
     if (time <= 0) {
-      setIsActive(false);
+      setCount((prev) => prev + 1);
+      console.log(count);
+      if (count % 5 === 0 && count !== 0) {
+        console.log(count % 4);
+        setIsActive(false);
+        setDone(true);
+      }
       if (!isBreak) {
         setIsBreak(true);
         setTime(breakMinutes * 60);
@@ -45,10 +54,6 @@ export default function usePomodoroTimer(
         setIsBreak(false);
         setTime(workMinutes * 60);
         setBreakCount((prevCount) => prevCount + 1);
-        setCycleCount((prevCount) => prevCount + 1);
-        if (cycleCount >= cyclesBeforePrompt) {
-          setShowContinuePrompt(true);
-        }
       }
     }
 
@@ -59,15 +64,7 @@ export default function usePomodoroTimer(
     }
 
     return () => clearInterval(interval);
-  }, [
-    time,
-    isActive,
-    isBreak,
-    workMinutes,
-    breakMinutes,
-    cyclesBeforePrompt,
-    cycleCount,
-  ]);
+  }, [time, isActive, isBreak, workMinutes, breakMinutes, cyclesBeforePrompt]);
 
   useEffect(() => {
     if (!isActive && !isMount) {
@@ -80,17 +77,6 @@ export default function usePomodoroTimer(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive, isBreak]);
 
-  const handleContinue = () => {
-    setShowContinuePrompt(false);
-    setCycleCount(0);
-    start();
-  };
-
-  const handleCancel = () => {
-    setShowContinuePrompt(false);
-    reset();
-  };
-
   return {
     time,
     isActive,
@@ -99,9 +85,7 @@ export default function usePomodoroTimer(
     reset,
     getFormattedString,
     workCount,
+    done,
     breakCount,
-    showContinuePrompt,
-    handleContinue,
-    handleCancel,
   };
 }
