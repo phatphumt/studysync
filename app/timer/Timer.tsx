@@ -1,27 +1,21 @@
 "use client";
 
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { uid } from "uid";
 import usePomodoroTimer from "../libs/useTimer";
 
 export default function Timer() {
-  // useEffect(() => {
-  //   window.addEventListener('beforeunload', e => {
-  //     if (confirm('leave?')) {
-  //       return
-  //     }
-  //     e.preventDefault()
-  //   })
+  useEffect(() => {
+    window.addEventListener("beforeunload", (e) => {
+      e.preventDefault();
+    });
 
-  //   return () => {
-  //     window.removeEventListener('beforeunload', (e) => {
-  //       if (confirm('leave?')) {
-  //         return
-  //       }
-  //       e.preventDefault()
-  //     })
-  //   }
-  // }, [])
+    return () => {
+      window.removeEventListener("beforeunload", (e) => {
+        e.preventDefault();
+      });
+    };
+  }, []);
 
   const [todo, setTodo] = useState<string[]>([]);
   const [completedTodo, setCompletedTodo] = useState<string[]>([]);
@@ -86,15 +80,6 @@ export default function Timer() {
       </div>
       <div className="p-8 flex flex-col justify-center items-center h-[90vh]">
         <h1 className="font-semibold text-3xl">{getFormattedString()}</h1>
-        {/* {!isActive ?
-          <button
-            className="btn btn-sm"
-            onClick={() => start()}
-            disabled={isActive}
-          >
-            start
-          </button> : null
-        )}} */}
 
         {!isActive ? (
           done ? (
@@ -122,13 +107,15 @@ export default function Timer() {
       </div>
       <dialog ref={modalRef} className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-xl">You're done</h3>
+          <h3 className="font-bold text-xl">You{"'"}re done</h3>
           <div className="py-4">
-            <p className="font-semibold text-lg">Wanna continue to another session?</p>
+            <p className="font-semibold text-lg">
+              Wanna continue to another session?
+            </p>
             <p>things you have done:</p>
             <ul className="h-[5rem] overflow-y-scroll">
               {completedTodo.map((el) => (
-                <li>- {el}</li>
+                <li key={uid(2)}>- {el}</li>
               ))}
             </ul>
           </div>
