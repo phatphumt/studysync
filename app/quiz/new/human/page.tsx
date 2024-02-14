@@ -1,179 +1,144 @@
-/* "use client";
-import { addToDB } from "@/app/config/flashcardActions";
-import { Quiz, Quizes } from "@/app/config/quizActions";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import React, { FormEvent, useRef, useState } from "react";
+"use client";
+
+import { Choice, Quizes } from "@/app/libs/quizActions";
+import React, { useState } from "react";
 import { uid } from "uid";
-const HumanQuiz = () => {
-  const questionRef = useRef<HTMLInputElement>(null);
-  const choice1Ref = useRef<HTMLInputElement>(null);
-  const choice2Ref = useRef<HTMLInputElement>(null);
-  const choice3Ref = useRef<HTMLInputElement>(null);
-  const choice4Ref = useRef<HTMLInputElement>(null);
-  const nameRef = useRef<HTMLInputElement>(null);
-  const correct1Ref = useRef<HTMLInputElement>(null);
-  const correct2Ref = useRef<HTMLInputElement>(null);
-  const correct3Ref = useRef<HTMLInputElement>(null);
-  const correct4Ref = useRef<HTMLInputElement>(null);
-  const [quiz, setQuiz] = useState<Quizes[]>([]);
-  function addChoice(e: FormEvent<HTMLFormElement>) {
+
+export default function HumanQuiz() {
+  const [question, setQuesion] = useState("");
+  const [val, setVal] = useState(1);
+  const [text, setText] = useState<{
+    0: string;
+    1: string;
+    2: string;
+    3: string;
+  }>({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+  });
+  const [quizes, setQuizes] = useState<Quizes[]>([]);
+  function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setQuiz((prev) => [
-      ...prev,
-      {
-        question: questionRef.current?.value as string,
-        choices: [
-          {
-            choice: choice1Ref.current?.value as string,
-            correct: correct1Ref.current?.checked as boolean,
-            id: uid(5),
-          },
-          {
-            choice: choice2Ref.current?.value as string,
-            correct: correct2Ref.current?.checked as boolean,
-            id: uid(5),
-          },
-          {
-            choice: choice3Ref.current?.value as string,
-            correct: correct3Ref.current?.checked as boolean,
-            id: uid(5),
-          },
-          {
-            choice: choice4Ref.current?.value as string,
-            correct: correct4Ref.current?.checked as boolean,
-            id: uid(5),
-          },
-        ],
-      },
-    ]);
-    choice1Ref.current!.value = "";
-    choice2Ref.current!.value = "";
-    choice3Ref.current!.value = "";
-    choice4Ref.current!.value = "";
-    questionRef.current!.value = "";
+    if (!Object.values(text).every((el) => Boolean(el))) return;
+    if (!val) return;
+    console.log(val);
+    console.log(Object.values(text));
+    setQuizes((prev) => {
+      const choicesGonnaAdd: Choice[] = Object.values(text).map((e, i) => {
+        return {
+          choice: e,
+          correct: i + 1 === val,
+          id: uid(6),
+        };
+      });
+
+      return [
+        ...prev,
+        { question: question, choices: choicesGonnaAdd, id: uid() },
+      ];
+    });
+
+    setQuesion("");
+    setText({ 0: "", 1: "", 2: "", 3: "" });
   }
   return (
     <>
-      <h1 className="text-2xl font-bold mx-8 mt-10 mb-2">Add Quiz</h1>
-      <div className="m-9 mt-0">
-        <form className="mb-3" onSubmit={addChoice}>
-          <div className="">
-            <input
-              type="text"
-              name="question"
-              placeholder="question"
-              className="input input-bordered input-primary w-[20%] focus:outline-none"
-              ref={questionRef}
-            />
-            <br />
-            {"     "}
-            <input
-              type="text"
-              name="choice1"
-              placeholder="choice 1"
-              className="input input-bordered input-primary w-[10%] focus:outline-none input-sm mr-2"
-              ref={choice1Ref}
-            />
-            <input
-              type="checkbox"
-              name="correct"
-              id="correct"
-              defaultChecked={true}
-              ref={correct1Ref}
-            />
-            <br />
-            <input
-              type="text"
-              name="choice2"
-              placeholder="choice 2"
-              className="input input-bordered input-primary w-[10%] focus:outline-none input-sm mr-2"
-              ref={choice2Ref}
-            />
-            <input
-              type="checkbox"
-              name="correct"
-              id="correct"
-              ref={correct2Ref}
-            />
-            <br />
-            <input
-              type="text"
-              name="choice3"
-              placeholder="choice 3"
-              className="input input-bordered input-primary w-[10%] focus:outline-none input-sm mr-2"
-              ref={choice3Ref}
-            />
-            <input
-              type="checkbox"
-              name="correct"
-              id="correct"
-              ref={correct3Ref}
-            />
-            <br />
-            <input
-              type="text"
-              name="choice4"
-              placeholder="choice 4"
-              className="input input-bordered input-primary w-[10%] focus:outline-none input-sm mr-2"
-              ref={choice4Ref}
-            />
-            <input
-              type="checkbox"
-              name="correct"
-              id="correct"
-              ref={correct4Ref}
-            />
-          </div>
-          <br />
-          <br />
-          <button className="btn mb-5 btn-sm">add quiz</button>
-          <button
-            className="btn mx-2 btn-sm"
-            type="button"
-            onClick={() => console.log(quiz)}
-          >
-            see data
-          </button>
-          <button className="btn mx-2 btn-sm" type="button">
-            clear
-          </button>
-        </form>
-        <form>
-          <span className="font-bold text-xl">
-            Quiz {nameRef.current?.value}
-          </span>
-          <br />
+      <form onSubmit={submit}>
+        <input
+          type="text"
+          className="input"
+          placeholder="question"
+          name="question"
+          value={question}
+          onChange={(e) => setQuesion(e.target.value)}
+        />
+        <div className="">
           <input
             type="text"
-            name="name"
-            placeholder="name"
-            className="input input-bordered input-primary w-[10%] focus:outline-none input-xs"
-            ref={nameRef}
+            name="0"
+            value={text[0]}
+            onChange={(e) => {
+              setText((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+            }}
           />
-          <br />
-          <div className="my-3">
-            <div>
-              1: a | a {"  "}
-              <span className="select-none cursor-pointer font-bold text-red-800">
-                (remove)
-              </span>
-            </div>
-          </div>
-          <button type="submit" className="btn btn-sm">
-            submit
-          </button>
-        </form>
-      </div>
+          <input
+            type="radio"
+            name="test123"
+            value={1}
+            onChange={(e) => setVal(Number(e.target.value))}
+            checked={val === 1}
+          />
+        </div>
+        <div className="">
+          <input
+            type="text"
+            name="1"
+            value={text[1]}
+            onChange={(e) => {
+              setText((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+            }}
+          />
+          <input
+            type="radio"
+            name="test123"
+            value={2}
+            onChange={(e) => setVal(Number(e.target.value))}
+            checked={val === 2}
+          />
+        </div>
+        <div className="">
+          <input
+            type="text"
+            name="2"
+            value={text[2]}
+            onChange={(e) => {
+              setText((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+            }}
+          />
+          <input
+            type="radio"
+            name="test123"
+            value={3}
+            onChange={(e) => setVal(Number(e.target.value))}
+            checked={val === 4}
+          />
+        </div>
+        <div className="">
+          <input
+            type="text"
+            name="3"
+            value={text[3]}
+            onChange={(e) => {
+              setText((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+            }}
+          />
+          <input
+            type="radio"
+            name="test123"
+            value={4}
+            onChange={(e) => setVal(Number(e.target.value))}
+            checked={val === 4}
+          />
+        </div>
+        <button>send</button>
+      </form>
+      {quizes.map(({ choices, id, question }) => (
+        <div key={id} className="p-6">
+          <h1>{question}</h1>
+          {choices.map((e) => (
+            <p
+              key={e.id}
+              className={`${
+                e.correct ? "text-green-500 font-bold" : "text-red-500"
+              }`}
+            >
+              {e.choice}
+            </p>
+          ))}
+        </div>
+      ))}
     </>
   );
-};
-
-export default HumanQuiz;
- */
-import React from "react";
-
-const HumanQuiz = () => {
-  return <div>HumanQuiz</div>;
-};
-
-export default HumanQuiz;
+}
