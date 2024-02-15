@@ -9,7 +9,6 @@ export default async function QuizHistoryPage({
   params: { id: string };
 }) {
   const data = await getSession(params.id);
-  console.log(`${data[0]._id}`);
   return (
     <div className="p-8">
       {data.length !== 0 ? (

@@ -1,37 +1,38 @@
 "use client";
-import React, { useRef, useState } from "react";
-import { Data } from "./page";
+
+import { DBQuiz } from "@/app/libs/quizActions";
 import Link from "next/link";
+import React, { useRef, useState } from "react";
 import Buttons from "./Buttons";
 
-export default function FlashcardList({ data }: { data: Data[] }) {
-  const modalRef = useRef<HTMLDialogElement | null>(null);
-  const [id, setID] = useState<string>("");
+export default function QuizList({ data }: { data: DBQuiz[] }) {
+  const [id, setID] = useState("");
+  const modalRef = useRef<HTMLDialogElement>(null);
   return (
     <div className="p-10">
       {data.length !== 0 ? (
         data.map((i) => (
           <div key={i._id}>
-            <span className="font-bold text-2xl">Flashcard ({i.name})</span>
+            <div className="flex items-center">
+              <span className="font-bold text-2xl">Flashcard ({i.name})</span>
+              <Buttons
+                id={i._id}
+                modalEvent={() => {
+                  setID(i._id);
+                  modalRef.current?.showModal();
+                }}
+              />
+            </div>
             {"       "}
-            <Buttons
-              id={`${i._id}`}
-              modalEvent={() => {
-                setID(i._id);
-                modalRef.current?.showModal();
-              }}
-            />
             {"  "}
             <p>
               Created At: {new Date(i.createdAt).toLocaleDateString()}{" "}
               {new Date(i.createdAt).toLocaleTimeString()}
             </p>
-            <Link href={`/flashcard/history/${i._id}`}>
-              View your history here
-            </Link>
+            <Link href={`/quiz/history/${i._id}`}>View your history here</Link>
             <br />
             <Link
-              href={`/flashcard/play/${i._id}`}
+              href={`/quiz/play/${i._id}`}
               className="text-xl font-semibold"
             >
               PLAY NOW!!!
@@ -40,7 +41,7 @@ export default function FlashcardList({ data }: { data: Data[] }) {
           </div>
         ))
       ) : (
-        <p>You have no flashcards</p>
+        <p>You have no quizes</p>
       )}
       <dialog ref={modalRef} className="modal">
         <div className="modal-box">
@@ -57,7 +58,7 @@ export default function FlashcardList({ data }: { data: Data[] }) {
             </span>{" "}
             <br />
             <span className="bg-gray-300 p-1 overflow-x-scroll font-mono text-sm">
-              https://studysync-nsc.vercel.app/flashcard/play/{id}
+              https://studysync-nsc.vercel.app/quiz/play/{id}
             </span>
           </div>
         </div>

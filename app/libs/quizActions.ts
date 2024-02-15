@@ -169,3 +169,16 @@ export async function getSession(id: string): Promise<DBQuizSession[]> {
     throw new Error(`${e}`);
   }
 }
+
+export async function removeQuiz(id: string) {
+  try {
+    await connect(process.env.MONGO_URI as string);
+  } catch (e) {
+    throw new Error(`${e}`);
+  }
+  try {
+    await QuizSchema.findByIdAndDelete(id);
+  } catch (e) {
+    throw new Error(`${e}`);
+  }
+}

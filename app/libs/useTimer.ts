@@ -64,7 +64,15 @@ export default function usePomodoroTimer(
     }
 
     return () => clearInterval(interval);
-  }, [time, isActive, isBreak, workMinutes, breakMinutes, cyclesBeforePrompt]);
+  }, [
+    time,
+    isActive,
+    isBreak,
+    workMinutes,
+    breakMinutes,
+    cyclesBeforePrompt,
+    count,
+  ]);
 
   useEffect(() => {
     if (!isActive && !isMount) {

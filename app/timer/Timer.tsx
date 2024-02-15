@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { uid } from "uid";
 import usePomodoroTimer from "../libs/useTimer";
+import { useRouter } from "next/navigation";
 
 export default function Timer() {
   useEffect(() => {
@@ -23,6 +24,7 @@ export default function Timer() {
   const modalRef = useRef<HTMLDialogElement>(null);
   const { isActive, start, getFormattedString, isBreak, done } =
     usePomodoroTimer(0.1, 0.05, 4);
+  const router = useRouter();
 
   useEffect(() => {
     if (done) {
@@ -80,14 +82,13 @@ export default function Timer() {
       </div>
       <div className="p-8 flex flex-col justify-center items-center h-[90vh]">
         <h1 className="font-semibold text-3xl">{getFormattedString()}</h1>
-
         {!isActive ? (
           done ? (
             <div className="flex space-x-2 mx-2">
               <button
                 className="btn btn-sm"
                 onClick={() => start()}
-                disabled={isActive}
+                disabled={todo.length !== 0}
               >
                 start
               </button>
@@ -96,7 +97,13 @@ export default function Timer() {
           ) : (
             <button
               className="btn btn-sm mx-2"
-              onClick={() => start()}
+              onClick={() => {
+                if (todo.length === 0) {
+                  alert("add a todo first");
+                  return;
+                }
+                start();
+              }}
               disabled={isActive}
             >
               start
@@ -132,7 +139,13 @@ export default function Timer() {
               >
                 Yes gimme more
               </button>
-              <button className="btn btn-md" type="button">
+              <button
+                className="btn btn-md"
+                type="button"
+                onClick={() => {
+                  router.push("/dashboard");
+                }}
+              >
                 Ahh im done
               </button>
             </form>

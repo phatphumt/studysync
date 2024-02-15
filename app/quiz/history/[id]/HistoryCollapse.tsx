@@ -24,7 +24,7 @@ export default function HistoryCollapse({
       >
         <p>
           created at: {new Date(createdAt).toLocaleDateString()}{" "}
-          {new Date(createdAt).toLocaleTimeString()} (UTC)
+          {new Date(createdAt).toLocaleTimeString()}
         </p>
         <h1 className="font-bold text-xl">Correct: </h1>
         {correct.length === 0 && <p>no correct answers</p>}

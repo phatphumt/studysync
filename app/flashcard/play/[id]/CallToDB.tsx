@@ -1,14 +1,12 @@
 "use client";
+import { TheFlashcard } from "@/app/libs/flashcardActions";
 import Link from "next/link";
 import * as uuid from "uid";
 
 type Data = {
   _id: string;
-  flashcards: { answer: string; question: string; id: string }[];
-  owner: string;
-  name: string;
   createdAt: string;
-};
+} & TheFlashcard;
 
 const CallToDB = ({ id, data }: { id: string; data: Data }) => {
   const sessionID = uuid.uid(15);
